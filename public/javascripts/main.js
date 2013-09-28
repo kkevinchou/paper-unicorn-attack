@@ -128,23 +128,20 @@ function particles() {
     proton = new Proton();
     emitter = new Proton.Emitter();
     //set Rate
-    emitter.rate = new Proton.Rate(Proton.getSpan(1,2), 0.1);
+    emitter.rate = new Proton.Rate(Proton.getSpan(0,1), 0.05);
     //add Initialize
-    emitter.addInitialize(new Proton.Radius(0.1, 0.2));
-    emitter.addInitialize(new Proton.Life(1,3));
-    emitter.addInitialize(new Proton.Velocity(1, Proton.getSpan(0, 30), 'polar'));
+   // emitter.addInitialize(new Proton.Radius(0.1, 0.2));
+    emitter.addInitialize(new Proton.Life(1.5,2));
+    emitter.addInitialize(new Proton.Velocity(1, Proton.getSpan(125, 135), 'polar'));
     //add Behaviour
-    var img = resources.get('/images/fireball.png');
 
-img.width = 10;
-img.height = 10;
-alert(img);
-    emitter.addInitialize(new Proton.ImageTarget(img));
+    emitter.addInitialize(new Proton.ImageTarget(resources.get('/images/fireball.png')));
     //emitter.addBehaviour(new Proton.Color('ff0000', 'random'));
     emitter.addBehaviour(new Proton.Alpha(0.9, 0));
     //set emitter position
     emitter.p.x = canvas.width / 2;
     emitter.p.y = canvas.height / 2;
+    emitter.rotation = 45;
     emitter.emit();
     //add emitter to the proton
     proton.addEmitter(emitter);
@@ -157,12 +154,10 @@ alert(img);
     console.log(renderer);
 }
 function init() {
-particles();
-console.log("start");
+    particles();
+    console.log("start");
 
-var img = resources.get('/images/fireball.png');
-img.width = 10;
-img.height = 10;
+
     setBoardSocketCallback(function (data) {
         drawBackground(context, canvas);
 
