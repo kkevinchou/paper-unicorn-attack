@@ -34,6 +34,23 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/controller', controller.index);
 
-http.createServer(app).listen(app.get('port'), function(){
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
+server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
+});
+
+var numPlayers = 0;
+io.sockets.on('connection', function (socket) {
+	console.log('new socket.io connection');
+	numPlayers++;
+	if (numPlayers % 2 == 0) {
+		socket.emit('config', { "character-type": "dragon", "color": "red" });
+	} else {
+		socket.emit('config', { "character-type": "dragon", "color": "blue" });
+	}
+	
+	socket.on('move', function (data) {
+		console.log('character sent motion', data);
+	});
 });
