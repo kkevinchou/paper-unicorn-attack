@@ -3,6 +3,20 @@ html
 		script(src='javascripts/jquery-1.10.2.min.js')
 		script(src='/socket.io/socket.io.js')
 		script(src='javascripts/controller.js')
+		script(src='javascripts/jquery.touchSwipe.min.js')
+		link(rel='stylesheet', href='/stylesheets/controller.css')
 	body
-		span
-			Some Text
+		div#startPage
+			img.center(src='/images/logo.png')
+			h1.center PLANES and DRAGONS
+			br
+			input#name.center(type='text')
+			br
+			p#status.center Status: Offline
+			br
+			div.center
+				a#join Join
+			br
+		div#controller
+			p test
+			div#info

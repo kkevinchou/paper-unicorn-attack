@@ -43,12 +43,15 @@ server.listen(app.get('port'), function(){
 var numPlayers = 0;
 io.sockets.on('connection', function (socket) {
 	console.log('new socket.io connection');
-	numPlayers++;
-	if (numPlayers % 2 == 0) {
-		socket.emit('config', { "character-type": "dragon", "color": "red" });
-	} else {
-		socket.emit('config', { "character-type": "dragon", "color": "blue" });
-	}
+	socket.on('join', function(data) {
+		console.log(data['name'], 'joined the game');
+		numPlayers++;
+		if (numPlayers % 2 == 0) {
+			socket.emit('config', { "name": data['name'], "character-type": "dragon", "color": "red" });
+		} else {
+			socket.emit('config', { "name": data['name'], "character-type": "dragon", "color": "blue" });
+		}
+	});
 	
 	socket.on('move', function (data) {
 		console.log('character sent motion', data);
