@@ -122,11 +122,59 @@ function generateClouds() {
 
 var context;
 var canvas;
+var proton;
+var emitter;
+function particles() {
+    proton = new Proton();
+    emitter = new Proton.Emitter();
+    //set Rate
+    emitter.rate = new Proton.Rate(Proton.getSpan(1,2), 0.1);
+    //add Initialize
+    emitter.addInitialize(new Proton.Radius(0.1, 0.2));
+    emitter.addInitialize(new Proton.Life(1,3));
+    emitter.addInitialize(new Proton.Velocity(1, Proton.getSpan(0, 30), 'polar'));
+    //add Behaviour
+    var img = resources.get('/images/fireball.png');
 
+img.width = 10;
+img.height = 10;
+alert(img);
+    emitter.addInitialize(new Proton.ImageTarget(img));
+    //emitter.addBehaviour(new Proton.Color('ff0000', 'random'));
+    emitter.addBehaviour(new Proton.Alpha(0.9, 0));
+    //set emitter position
+    emitter.p.x = canvas.width / 2;
+    emitter.p.y = canvas.height / 2;
+    emitter.emit();
+    //add emitter to the proton
+    proton.addEmitter(emitter);
+    // add canvas renderer
+    var renderer = new Proton.Renderer('canvas', proton, canvas);
+    renderer.onProtonUpdate = function() {
+        
+    };
+    renderer.start();
+    console.log(renderer);
+}
 function init() {
+particles();
+console.log("start");
 
+var img = resources.get('/images/fireball.png');
+img.width = 10;
+img.height = 10;
     setBoardSocketCallback(function (data) {
         drawBackground(context, canvas);
+
+        /// particle stuff
+
+        context.save();
+        //context.globalCompositeOperation = "lighter";
+        proton.update();
+        context.restore();
+
+        ///
+
         var airplane = data.players[0];
         context.strokeRect(airplane.x,airplane.y,50,50);
 
@@ -158,7 +206,8 @@ $(document).ready(function(){
 
 
 		resources.load([
-		    '/images/cloud.png'
+		    '/images/cloud.png',
+            '/images/fireball.png'
 		]);
 
 
