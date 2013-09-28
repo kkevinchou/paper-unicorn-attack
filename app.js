@@ -54,3 +54,6 @@ io.sockets.on('connection', function (socket) {
 		console.log('character sent motion', data);
 	});
 });
+
+var gameModule = require('./lib/game.js');
+gameModule.start();
