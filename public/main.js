@@ -15,6 +15,10 @@ window.requestAnimFrame = (function(){
     var loading = [];
     var readyCallbacks = [];
 
+    setBoardSocketCallback(function (data) {
+        console.log('got state', data);
+    });
+
     // Load an image url or an array of image urls
     function load(urlOrArr) {
         if(urlOrArr instanceof Array) {
@@ -89,7 +93,7 @@ function drawBackground(context, canvas)
 function Cloud(size) {
 	this.size = size;
 	this.image = new Image();
-	this.image.src = "cloud.png";
+	this.image.src = "/images/cloud.png";
 	this.x = 800;
 	this.y = 20;
 }
@@ -97,7 +101,7 @@ function Cloud(size) {
 Cloud.prototype.draw = function(context)
 {
 	for (var i = 0; i < this.size; i++) {
-		var img = resources.get('cloud.png');
+		var img = resources.get('/images/cloud.png');
 		
 		context.drawImage(img, this.x + i*30, this.y, 50, 50);
 
@@ -169,7 +173,7 @@ $(document).ready(function(){
 
 
 		resources.load([
-		    'cloud.png'
+		    '/images/cloud.png'
 		]);
 
 		drawBackground(context, canvas);

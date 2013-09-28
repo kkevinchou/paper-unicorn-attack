@@ -40,20 +40,15 @@ server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
 
-var numPlayers = 0;
-io.sockets.on('connection', function (socket) {
-	console.log('new socket.io connection');
-	numPlayers++;
-	if (numPlayers % 2 == 0) {
-		socket.emit('config', { "character-type": "dragon", "color": "red" });
-	} else {
-		socket.emit('config', { "character-type": "dragon", "color": "blue" });
-	}
-	
-	socket.on('move', function (data) {
-		console.log('character sent motion', data);
-	});
-});
-
 var gameLoopModule = require('./lib/gameLoop.js');
 gameLoopModule.start();
+
+io.sockets.on('connection', function (socket) {
+	// gameLoopModule.socketConnected(socket);
+});
+var controllerIO = io.of('/controller').on('connection', function (socket) {
+	gameLoopModule.controllerConnected(socket);
+});
+var boardIO = io.of('/board').on('connection', function (socket) {
+	gameLoopModule.boardConnected(socket);
+});
