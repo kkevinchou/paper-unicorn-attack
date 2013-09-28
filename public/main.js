@@ -127,7 +127,7 @@ function init() {
 
     setBoardSocketCallback(function (data) {
         drawBackground(context, canvas);
-        var airplane = data.mainAirplane;
+        var airplane = data.players[0];
         context.strokeRect(airplane.x,airplane.y,50,50);
 
         for (var i = 0; i < clouds.length; i++) {
