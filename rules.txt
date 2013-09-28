@@ -20,8 +20,8 @@ All Controllable Units
 -All units (Fighter planes and Cargo Plane) start out healthy, and moving towards the opposite side of the map
 
 [HEALTHY] ---onHit---> [INJURED] ---onHit---> [DEAD]
-      ^                                                                         |
-       -----------------------onRespawn-----------------------
+      ^                                          |
+      ------------------------onRespawn-----------
 
 Planes
 -Two Types:
