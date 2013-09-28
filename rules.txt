@@ -16,7 +16,6 @@ Planes
 All units are constantly in motion, no stopping
 
 Two teams:  
-
 All Controllable Units
 -All units (Fighter planes and Cargo Plane) start out healthy, and moving towards the opposite side of the map
 
@@ -37,3 +36,6 @@ Planes
 Dragons
 -controllable unit
 -attack: to successfully attack, a dragon must hit a plane with a fire ball (ranged attack)
+
+
+
