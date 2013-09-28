@@ -1,0 +1,38 @@
+Design Details
+
+Controls: 
+-Swipe determines direction and magnitude. 
+  -magnitude determines added velocity to the base velocity, and after magnitude is added, the unit 
+  will deccelerate at a constant rate until it reaches its base velocity.
+-If in the middle of a swipe and another swipe is received:
+  -add new magnitude to the base velocity (does not stack!) and deccelerate
+
+Game Logic Handling:
+-input: character + direction + magnitude
+-output (to rendering): list of(character + position + collision[true or false + who they collided with])
+
+-Things we have to handle:
+  -Cargo Ship:
+    -health
+      -if (fireball) { subtract X points from health, where X = damage done by a fireball }
+      -else do nothing (planes and dragons by themselves can't damage the cargo plane)
+    -position update
+  -Fighter plane:
+    -health
+      -if (hit - i.e. collision with fireball. Do nothing for collision with anything else)
+        -HEALTHY -> INJURED, INJURED -> DEAD
+      -if (reached DEAD state)
+        -use callback: set active boolean to false, sleep for X sec., set active boolean to true,
+        update position to beside cargo plan.
+    -attack: if tap received, perform dash
+      -while (in dash): if collision occurs with a dragon, manage health.
+    -position update: use direction + magnitude for plane to get new coordinates
+  -Dragons:
+    -health (see Fighter Plane)
+      -one difference: after setting active boolean to true in DEAD state callback, 
+      set position to their side of the map
+    -attack: if tap received for Dragon, use fireball
+    -position update (see Fighter Plane)
+
+Possible Extras:
+-Different Dragon Types
