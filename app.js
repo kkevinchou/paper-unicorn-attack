@@ -43,8 +43,8 @@ server.listen(app.get('port'), function(){
 var gameLoopModule = require('./lib/gameLoop.js');
 gameLoopModule.start();
 
-io.sockets.on('connection', function (socket) {
-	console.log('new socket.io connection');
+/*io.sockets.on('connection', function (socket) {
+	/*console.log('new socket.io connection');
 	socket.on('join', function(data) {
 		console.log(data['name'], 'joined the game');
 		numPlayers++;
@@ -59,7 +59,7 @@ io.sockets.on('connection', function (socket) {
 		console.log('character sent motion', data);
 	});
 	// gameLoopModule.socketConnected(socket);
-});
+});*/
 var controllerIO = io.of('/controller').on('connection', function (socket) {
 	gameLoopModule.controllerConnected(socket);
 });

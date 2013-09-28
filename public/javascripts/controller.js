@@ -34,6 +34,7 @@ function showStartPage() {
 	hideController();
 	$('#startPage').show();
 	inGame = false;
+	$('#join').unbind('click');
 	$('#join').click(function (data) {
 		joinGame();
 	});
@@ -41,6 +42,7 @@ function showStartPage() {
 
 function hideStartPage() {
 	$('#startPage').hide();
+	$('#join').unbind('click');
 }
 
 function joinGame() {
@@ -53,17 +55,27 @@ function joinGame() {
 	}
 }
 
+function quitGame() {
+	socket.emit('quit', {"name": name});
+	showStartPage();
+}
+
 function showController() {
 	hideStartPage();
 	$('#controller').show();
 	$("#pad").hide();
 	inGame = true;
+	$('#quit').unbind('click');
+	$('#quit').click(function (data) {
+		quitGame();
+	});
 }
 
 function hideController() {
 	$('#controller').hide();
 	$('#pad').hide();
 	$('#bomb').hide();
+	$('#quit').unbind('click');
 }
 
 function setupController(data) {
