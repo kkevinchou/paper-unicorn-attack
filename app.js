@@ -55,5 +55,5 @@ io.sockets.on('connection', function (socket) {
 	});
 });
 
-var gameModule = require('./lib/game.js');
-gameModule.start();
+var gameLoopModule = require('./lib/gameLoop.js');
+gameLoopModule.start();
