@@ -1,12 +1,12 @@
 // shim layer with setTimeout fallback
-window.requestAnimFrame = (function(){
+/*window.requestAnimFrame = (function(){
   return  window.requestAnimationFrame       ||
           window.webkitRequestAnimationFrame ||
           window.mozRequestAnimationFrame    ||
           function( callback ){
             window.setTimeout(callback, 1000 / 60);
           };
-})();
+})();*/
 
 
 
@@ -14,10 +14,6 @@ window.requestAnimFrame = (function(){
     var resourceCache = {};
     var loading = [];
     var readyCallbacks = [];
-
-    setBoardSocketCallback(function (data) {
-        console.log('got state', data);
-    });
 
     // Load an image url or an array of image urls
     function load(urlOrArr) {
@@ -126,40 +122,29 @@ function generateClouds() {
 
 var context;
 var canvas;
-function update(dt) {
-		for (var i = 0; i < clouds.length; i++) {
-			var cloud = clouds[i];
-			cloud.x -= 1;
-		};
-}
-
-function render() {
-		drawBackground(context, canvas);
-
-		for (var i = 0; i < clouds.length; i++) {
-			var cloud = clouds[i];
-			cloud.draw(context);
-		};
-}
-
-// The main game loop
-var lastTime;
-function main() {
-    var now = Date.now();
-    var dt = (now - lastTime) / 1000.0;
-
-    update(dt);
-    render();
-
-    lastTime = now;
-    requestAnimFrame(main);
-};
 
 function init() {
-   // reset();
-    lastTime = Date.now();
-    main();
+
+    setBoardSocketCallback(function (data) {
+        drawBackground(context, canvas);
+        var airplane = data.mainAirplane;
+        context.strokeRect(airplane.x,airplane.y,50,50);
+
+        for (var i = 0; i < clouds.length; i++) {
+            var cloud = clouds[i];
+            cloud.x -= 1;
+        };
+
+            for (var i = 0; i < clouds.length; i++) {
+            var cloud = clouds[i];
+            cloud.draw(context);
+        };
+
+   
+    });
 }
+
+
 
 $(document).ready(function(){
 
@@ -176,7 +161,9 @@ $(document).ready(function(){
 		    '/images/cloud.png'
 		]);
 
-		drawBackground(context, canvas);
+
+
+		//drawBackground(context, canvas);
 		generateClouds();
 		resources.onReady(init);
 	}
