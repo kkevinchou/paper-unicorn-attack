@@ -3,11 +3,12 @@
     "version": "0.0.1",
     "private": true,
     "dependencies": {
-        "express": "latest",
         "async": "latest",
         "socket.io": "latest",
         "jade": "latest",
-        "gauss": "latest"
+        "gauss": "latest",
+        "express": "3.4.0",
+        "ejs": "*"
       },
     "engines": {
 		"node": "0.10.x",
