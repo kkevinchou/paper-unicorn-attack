@@ -5,7 +5,7 @@ $(function () {
 var socket = null;
 var boardSocketCallback = null;
 function setupBoardSocketIO() {
-	socket = io.connect('http://localhost/board');
+	socket = io.connect('/board');
 
 	socket.on('connect', function (data) {
 		boardSocketConnected();

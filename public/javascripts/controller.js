@@ -16,7 +16,7 @@ function ready () {
 
 var socket = null;
 function setupSocketIO() {
-	socket = io.connect('http://localhost/controller');
+	socket = io.connect('/controller');
 
 	socket.on('connect', function (data) {
 		socketConnected();
