@@ -1,0 +1,39 @@
+Game Rules for Paper Unicorn Attack
+
+Objective:
+For the Planes: Get the cargo plane to the other side of them map safely 
+For the Dragons: Destroy the Cargo plane
+
+Controls:
+Dragons
+-swipe in the direction you want to go
+-tap for fireballs
+
+Planes
+-swipe in the direction you want to go
+-tap for "dash"
+
+All units are constantly in motion, no stopping
+
+Two teams:  
+
+All Controllable Units
+-All units (Fighter planes and Cargo Plane) start out healthy, and moving towards the opposite side of the map
+
+[HEALTHY] ---onHit---> [INJURED] ---onHit---> [DEAD]
+      ^                                                                         |
+       -----------------------onRespawn-----------------------
+
+Planes
+-Two Types:
+  -Cargo Plane
+    -non-controllable unit
+    -moves at a (slow) constant rate across the screen
+    -has a health bar (displayed on screen). When it reaches zero, the game ends.
+  -Fighter Planes
+    -controllable unit
+    -attack: to successfully attack, you have to hit the dragon while performing a "dash" (melee)
+
+Dragons
+-controllable unit
+-attack: to successfully attack, a dragon must hit a plane with a fire ball (ranged attack)
