@@ -1,5 +1,25 @@
 $(function() {
 	ready();
+});
+
+function isVertical() {
+	if (window.innerWidth > window.innerHeight) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
+var swipeStart = null;
+var swipeLast = null;
+var inGame = false;
+var name = null;
+var mouseDown = false;
+var isVert = false;
+function ready () {
+	document.ontouchmove = function(event){
+		event.preventDefault();
+	}
 
 	$('#knob').on('dragstart', function(event) { event.preventDefault(); });
 	$('#knob').attr('unselectable', 'on')
@@ -8,34 +28,15 @@ $(function() {
     $('#pad').attr('unselectable', 'on')
                  .css('user-select', 'none')
                  .on('selectstart', false);
-});
-
-function isMobile() {
-	if (window.innerWidth > window.innerHeight) {
-		
-	}
-	if( navigator.userAgent.match(/Android/i)
- 		|| navigator.userAgent.match(/webOS/i)
- 		|| navigator.userAgent.match(/iPhone/i)
- 		|| navigator.userAgent.match(/iPad/i)
- 		|| navigator.userAgent.match(/iPod/i)
- 		|| navigator.userAgent.match(/BlackBerry/i)
- 		|| navigator.userAgent.match(/Windows Phone/i)){
-    	return true;
-	} else {
-    	return false;
-  	}
-}
-
-var swipeStart = null;
-var swipeLast = null;
-var inGame = false;
-var name = null;
-var mouseDown = false;
-function ready () {
-	document.ontouchmove = function(event){
-		event.preventDefault();
-	}
+                 
+	$( window ).resize(function() {
+		if (inGame) {
+			if (isVertical() != isVert) {
+				showController();
+				isVert = isVertical();
+			}
+		}
+	});
 	setupSocketIO();
 	
 	showStartPage();
@@ -80,7 +81,7 @@ function joinGame() {
 	name = $('#name').val();
 	if (name) {
 		socket.emit('join', {"name":name});
-		showController();
+		//showController();
 	} else {
 		alert('Enter a name');
 	}
@@ -102,7 +103,8 @@ function showController() {
 	});
 	
 	$('#pad').css('background-color', '#00ffff');
-	if (isMobile()) {
+	isVert = isVertical();
+	if (isVert) {
 		$("#controls").detach().insertBefore("#pad");
 		$('#pad').removeClass('left').addClass('bottom');
 		$('#controls').removeClass('right').addClass('top');
@@ -217,7 +219,7 @@ function padTouchStart(event) {
 	var point = getPointFromEvent(event);
 	var x = point[0];
 	var y = point[1];
-	$("#info").html("Touch start " + x + ", " + y);
+	//$("#info").html("Touch start " + x + ", " + y);
 	swipeStart = new Object();
 	swipeStart.x = x;
 	swipeStart.y = y;
@@ -230,7 +232,7 @@ function padTouchMove(event) {
 	swipeLast = new Object();
 	swipeLast.x = x;
 	swipeLast.y = y;
-	$("#info").html("Touch move " + x + ", " + y);
+	//$("#info").html("Touch move " + x + ", " + y);
 	angle = calculateAngle(swipeStart.x, swipeStart.y, x, y);
 	magnitude = calculateMagnitude(swipeStart.x, swipeStart.y, x, y);
 	var imgWidth = $("#knob").width();
@@ -244,7 +246,7 @@ function padTouchEnd(event) {
 	var point = getPointFromEvent(event);
 	var x = point[0];
 	var y = point[1];
-	$("#info").html("Touch end");
+	//$("#info").html("Touch end");
 	$("#knob").hide();
 	if (swipeLast) {
 		angle = calculateAngle(swipeStart.x, swipeStart.y, swipeLast.x, swipeLast.y);
