@@ -148,7 +148,35 @@ function createEmitterForTrailingSmoke() {
     return [proton, emitter];
 }
 
+function createRainbowEmitter() {
+    var proton = new Proton();
+    var emitter = new Proton.Emitter();
+    //set Rate
+    emitter.rate = new Proton.Rate(Proton.getSpan(0,1), 0.05);
+    //add Initialize
+   // emitter.addInitialize(new Proton.Radius(0.1, 0.2));
+    emitter.addInitialize(new Proton.Life(1.5,2));
+    emitter.addInitialize(new Proton.Velocity(1, Proton.getSpan(125, 135), 'polar'));
+    //add Behaviour
 
+    emitter.addInitialize(new Proton.ImageTarget(resources.get('/images/Particle-03.png')));
+     //emitter.addBehaviour(new Proton.Color('ff0000', 'random'));
+    emitter.addBehaviour(new Proton.Alpha(0.9, 0));
+    //set emitter position
+    emitter.p.x = canvas.width / 2;
+    emitter.p.y = canvas.height / 2;
+    emitter.rotation = 45;
+    emitter.emit();
+    //add emitter to the proton
+    proton.addEmitter(emitter);
+    // add canvas renderer
+    var renderer = new Proton.Renderer('canvas', proton, canvas);
+    renderer.onProtonUpdate = function() {
+        //noop
+    };
+    renderer.start();
+    return [proton, emitter];
+}
 
 var gameState = 0; // if game is one, end screen is being displayed
 var victoryDragonFlap = false;
@@ -214,6 +242,23 @@ function drawParticlesForPlane(id, angle, x, y) {
         particleData = existingParticleEmitters[id];
     } else {
         particleData = createEmitterForTrailingSmoke();
+        existingParticleEmitters[id] = particleData;
+    }
+    var proton = particleData[0];
+    var emitter = particleData[1];
+
+    emitter.p.x = x;
+    emitter.p.y = y;
+    emitter.rotation = angle;
+    proton.update();
+}
+
+function drawParticlesForCargo(id, angle, x, y) {
+    var particleData = [];
+    if (id in existingParticleEmitters) {
+        particleData = existingParticleEmitters[id];
+    } else {
+        particleData = createRainbowEmitter();
         existingParticleEmitters[id] = particleData;
     }
     var proton = particleData[0];
@@ -324,13 +369,12 @@ function init() {
                 // cargo
 
                 context.drawImage(resources.get("/images/cargo.png"), x-100, y-100, 200, 200);
+                drawParticlesForCargo(object.id, 217, x - 65, y);
 
             } else if (type == 1) {
                 // plane
                 drawParticlesForPlane(object.id, 217, x, y) ;
                 context.drawImage(resources.get("/images/plane1.png"), x-50, y-50, 100, 100);
-
-
 
             } else if (type == 2) {
                 // dragon
@@ -452,6 +496,7 @@ $(document).ready(function(){
             '/images/dragon1-breathe.png',
             '/images/particle1.png',
             '/images/particle2.png',
+            '/images/Particle-03.png',
             '/images/cloud1.png',
             '/images/cloud2.png',
             '/images/cloud3.png',
