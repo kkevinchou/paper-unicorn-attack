@@ -11,5 +11,6 @@ Installing Node.js on Mac:
 TO DO LIST:
 ====================
 
-Cargo health with assets
 Flashing for invulnerable
+Controls being reversed
+Controls magnitude being weird (Chrome)
