@@ -214,6 +214,10 @@ function init() {
    // e = r[1];
 
 
+   setBoardDisconnectCallback(function (data) {
+        alert('disconnect');
+   });
+
     setBoardSocketCallback(function (data) {
         
         if (data.game.ended) {
