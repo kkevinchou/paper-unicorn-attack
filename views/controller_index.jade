@@ -11,16 +11,18 @@ html
 			img.center(src='/images/logo.png')
 			h1.center PLANES and DRAGONS
 			br
-			input#name.center(type='text')
-			br
-			p#status.center Status: Offline
-			br
-			div.center
-				a#join Join
+			form
+				input#name.center(type='text')
+				br
+				p#status.center Status: Offline
+				br
+				div.center
+					input#join.center(type='submit', onclick="return false;") Join
 			br
 		div#controller
-			a#quit Quit
-			p#handle Test
-			div#info
-			img#pad(src='/images/pad.png')
-			img#bomb(src='/images/bomb.png')
+			div#pad
+				img#knob(src='/images/pad.png')
+				img#bomb(src='/images/bomb.png')
+			div#controls
+				a#quit Quit
+				p#handle Test
