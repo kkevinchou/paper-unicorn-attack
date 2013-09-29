@@ -31,7 +31,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/'board, routes.board);
+app.get('/board', routes.board);
 app.get('/users', user.list);
 app.get('/controller', controller.index);
 
