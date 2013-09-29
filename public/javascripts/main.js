@@ -559,7 +559,9 @@ function init() {
         for (var i = 0; i < existingEvents.length; i++) {
             var existingEvent = existingEvents[i];
             if (existingEvent.type == "slash") {
-                
+                var x = existingEvent.x;
+                var y = existingEvent.y;
+
                 context.drawImage(resources.get("/images/slash.png"), x, y, 63, 58);
                 existingEvent.timer --;
 
