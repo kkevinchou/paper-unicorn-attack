@@ -217,7 +217,15 @@ function init() {
 
             } else if (type == 2) {
                 // dragon
-                context.drawImage(resources.get("/images/dragon1.png"), x-50, y-50, 100, 100);
+                var img;
+                if (object.frame ==0) {
+                    img = resources.get("/images/dragon1.png");
+                } else if (object.frame == 1) {
+                    img = resources.get("/images/dragon1-down.png");
+                } else if (object.frame == 2) {
+                    img = resources.get("/images/dragon1-breathe.png");
+                }
+                context.drawImage(img, x-50, y-50, 100, 100);
 
 
             } else if (type == 3) {
@@ -276,7 +284,9 @@ $(document).ready(function(){
             '/images/dragon1.png',
             '/images/cargo.png',
             '/images/darksmoke.png',
-            '/images/mainbg.png'
+            '/images/mainbg.png',
+            '/images/dragon1-down.png',
+            '/images/dragon1-breathe.png'
 		]);
 
 
