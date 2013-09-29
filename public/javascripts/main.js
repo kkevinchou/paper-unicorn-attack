@@ -466,6 +466,12 @@ function init() {
         var newEvents = data.events;
         for (var i = 0; i < newEvents.length; i++) {
             var newEvent = newEvents[i];
+
+            if (newEvent.type == "audio") {
+                filename = newEvent.extra.filename;
+                var sound = new Audio("sounds/" + filename);
+                sound.play();
+            }
         }
 
         var cargoHealth = data.game.cargoHealth;
