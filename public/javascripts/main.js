@@ -135,8 +135,8 @@ function particles() {
     emitter.addInitialize(new Proton.Velocity(1, Proton.getSpan(125, 135), 'polar'));
     //add Behaviour
 
-    emitter.addInitialize(new Proton.ImageTarget(resources.get('/images/fireball.png')));
-    //emitter.addBehaviour(new Proton.Color('ff0000', 'random'));
+    //emitter.addInitialize(new Proton.ImageTarget(resources.get('/images/fireball.png')));
+    emitter.addBehaviour(new Proton.Color('ff0000', 'random'));
     emitter.addBehaviour(new Proton.Alpha(0.9, 0));
     //set emitter position
     emitter.p.x = canvas.width / 2;
@@ -183,7 +183,7 @@ function init() {
 
             //console.log (x + " " + y);
             context.translate(x,y);            
-            context.rotate(-adjustedHeadingInDegrees*Math.PI/180);
+            context.rotate(adjustedHeadingInDegrees*Math.PI/180);
             context.translate(-x,-y);            
 
             if (type == 1) {
