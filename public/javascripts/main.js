@@ -554,6 +554,24 @@ function init() {
             }
         };
 
+
+        var newExistingEventArray = [];
+        for (var i = 0; i < existingEvents.length; i++) {
+            var existingEvent = existingEvents[i];
+            if (existingEvent.type == "slash") {
+                
+                context.drawImage(resources.get("/images/slash.png"), x, y, 63, 58);
+                existingEvent.timer --;
+
+                if (existingEvent.timer >= 0) {
+                    newExistingEventArray.push(existingEvent);
+                }
+            } else {
+                newExistingEventArray.push(existingEvent);
+            }
+        }
+        existingEvents = newExistingEventArray;
+
         var newEvents = data.events;
         for (var i = 0; i < newEvents.length; i++) {
             var newEvent = newEvents[i];
@@ -566,9 +584,13 @@ function init() {
                 var x = newEvent.x;
                 var y = newEvent.y;
 
+                newEvent.timer = 30;
+                existingEvents.push(newEvent);
+
                 context.drawImage(resources.get("/images/slash.png"), x, y, 63, 58);
             }
         }
+
 
 		// endlessly loop cargo ambiance sound
 		/*var cargo_ambiance = new Audio("sounds/cargo_plane_ambiance.wav");
