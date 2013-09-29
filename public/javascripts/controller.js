@@ -276,6 +276,7 @@ function move(angle, magnitude, delay) {
 
 function tap() {
 	setTimeout(function() {
+		playSound();
 		socket.emit("tap", {"name": name});
 	}, 0);
 }
@@ -295,6 +296,7 @@ function calculateAngle(startX, startY, destinationX, destinationY) {
 	return angle;
 }
 
-function playSound( url ){   
-  	$("#sound").innerHTML="<embed src='"+url+"' hidden=true autostart=true loop=false>";
+function playSound(url){ 
+	document.getElementById('sound').play();
+	document.getElementById('sound').currentTime = 0;
 }
