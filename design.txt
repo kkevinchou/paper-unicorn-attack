@@ -36,3 +36,24 @@ Game Logic Handling:
 
 Possible Extras:
 -Different Dragon Types
+
+Collisions:
+	Cargo plane:
+		Fighter: none
+		Dragon: dragon takes damage
+		Fireball: fireball dies, cargo plane takes damage
+	Fighter plane:
+		Fighter: none
+		Cargo: none
+		Dragon: if attack mode => dragon takes dmg; else fighter takes dmg
+		Fireball: fireball dies, fighter takes dmg
+	Dragon:
+		Dragon: none
+		Fighter: if fighter attacking => dragon takes dmg; else fighter takes dmg
+		Cargo: dragon takes dmg
+		Fireball: none
+	Fireball:
+		Fighter: fireball dies, fighter takes dmg
+		Cargo: fireball dies, fighter takes dmg
+		Dragon: none
+		Fireball: none
