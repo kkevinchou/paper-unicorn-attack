@@ -178,8 +178,11 @@ function init() {
             var type = object.type;
             var x = object.x;
             var y = object.y;
+            var heading = object.heading;
 
             console.log (x + " " + y);
+
+            context.rotate(heading);
 
             if (type == 0) {
                 // cargo
