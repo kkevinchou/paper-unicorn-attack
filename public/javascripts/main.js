@@ -306,6 +306,9 @@ function drawParticlesForCargo(id, angle, x, y) {
     proton.update();
 }
 
+
+var numDragonColors = 6;
+var numPlaneColors = 11;
 function init() {
    // particles();
 
@@ -451,16 +454,17 @@ function init() {
 
             } else if (type == 1) {
                 // plane
+                var planeColor = object.colorId % numPlaneColors + 1;
 
                 if (object.injureFrame == 1) {
                     context.globalAlpha = 0.3;
                 }
 
-                context.drawImage(resources.get("/images/plane1.png"), x-50, y-50, 100, 100);
+                context.drawImage(resources.get("/images/plane" + planeColor + ".png"), x-50, y-50, 100, 100);
 
             } else if (type == 2) {
                 // dragon
-
+                var dragonColor = object.colorId % numDragonColors + 1;
                 if (object.injureFrame == 1) {
                     context.globalAlpha = 0.3;
                 }
@@ -468,19 +472,19 @@ function init() {
                 var img = null;
                 if (object.injured) {
                     if (object.frame ==0) {
-                        img = resources.get("/images/dragon1-injured.png");
+                        img = resources.get("/images/dragon" + dragonColor + "-injured.png");
                     } else if (object.frame == 1) {
-                        img = resources.get("/images/dragon1-injured-down.png");
+                        img = resources.get("/images/dragon" + dragonColor + "-injured-down.png");
                     } else if (object.frame == 2) {
-                        img = resources.get("/images/dragon1-injured-breathe.png");
+                        img = resources.get("/images/dragon" + dragonColor + "-injured-breathe.png");
                     }
                 } else {
                     if (object.frame ==0) {
-                        img = resources.get("/images/dragon1.png");
+                        img = resources.get("/images/dragon" + dragonColor + ".png");
                     } else if (object.frame == 1) {
-                        img = resources.get("/images/dragon1-down.png");
+                        img = resources.get("/images/dragon" + dragonColor + "-down.png");
                     } else if (object.frame == 2) {
-                        img = resources.get("/images/dragon1-breathe.png");
+                        img = resources.get("/images/dragon" + dragonColor + "-breathe.png");
                     }
 
                 }
@@ -617,15 +621,45 @@ $(document).ready(function(){
             '/images/plane9.png',
             '/images/plane10.png',
             '/images/plane11.png',
-            '/images/dragon1.png',
-            '/images/dragon1-injured.png',
             '/images/cargo.png',
             '/images/darksmoke.png',
             '/images/mainbg.png',
+            '/images/dragon1.png',
+            '/images/dragon1-injured.png',
             '/images/dragon1-down.png',
             '/images/dragon1-breathe.png',
             '/images/dragon1-injured-down.png',
             '/images/dragon1-injured-breathe.png',
+            '/images/dragon2.png',
+            '/images/dragon2-injured.png',
+            '/images/dragon2-down.png',
+            '/images/dragon2-breathe.png',
+            '/images/dragon2-injured-down.png',
+            '/images/dragon2-injured-breathe.png',
+            '/images/dragon3.png',
+            '/images/dragon3-injured.png',
+            '/images/dragon3-down.png',
+            '/images/dragon3-breathe.png',
+            '/images/dragon3-injured-down.png',
+            '/images/dragon3-injured-breathe.png',
+            '/images/dragon4.png',
+            '/images/dragon4-injured.png',
+            '/images/dragon4-down.png',
+            '/images/dragon4-breathe.png',
+            '/images/dragon4-injured-down.png',
+            '/images/dragon4-injured-breathe.png',
+            '/images/dragon5.png',
+            '/images/dragon5-injured.png',
+            '/images/dragon5-down.png',
+            '/images/dragon5-breathe.png',
+            '/images/dragon5-injured-down.png',
+            '/images/dragon5-injured-breathe.png',
+            '/images/dragon6.png',
+            '/images/dragon6-injured.png',
+            '/images/dragon6-down.png',
+            '/images/dragon6-breathe.png',
+            '/images/dragon6-injured-down.png',
+            '/images/dragon6-injured-breathe.png',
             '/images/particle1.png',
             '/images/particle2.png',
             '/images/Particle-03.png',
