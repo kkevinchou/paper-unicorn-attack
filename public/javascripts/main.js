@@ -402,14 +402,14 @@ function init() {
 
             if (object.name) {
                 context.save();
+                context.font = 'bold 12pt sans-serif';
                 if (type == 2) {
-                   context.strokeStyle = '#ff0000';
-
+                   context.fillStyle = '#ff0000';
                 } else {
-                    context.strokeStyle = '#0000ff';
+                    context.fillStyle = '#ffffff';
 
                 }
-                context.strokeText(object.name, x, y);
+                context.fillText(object.name, x, y);
 
                 context.restore();
             }
