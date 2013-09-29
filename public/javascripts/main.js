@@ -559,8 +559,8 @@ function init() {
         for (var i = 0; i < existingEvents.length; i++) {
             var existingEvent = existingEvents[i];
             if (existingEvent.type == "slash") {
-                var x = existingEvent.x;
-                var y = existingEvent.y;
+                var x = existingEvent.extra.x;
+                var y = existingEvent.extra.y;
 
                 context.drawImage(resources.get("/images/slash.png"), x, y, 63, 58);
                 existingEvent.timer --;
@@ -583,10 +583,11 @@ function init() {
                 var sound = new Audio("sounds/" + filename);
                 sound.play();
             } else if (newEvent.type == "slash") {
-                var x = newEvent.x;
-                var y = newEvent.y;
+                console.log('SLASH!');
+                var x = newEvent.extra.x;
+                var y = newEvent.extra.y;
 
-                newEvent.timer = 30;
+                newEvent.timer = 20;
                 existingEvents.push(newEvent);
 
                 context.drawImage(resources.get("/images/slash.png"), x, y, 63, 58);
