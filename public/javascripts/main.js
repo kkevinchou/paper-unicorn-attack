@@ -239,7 +239,7 @@ function init() {
 
 
    setBoardDisconnectCallback(function (data) {
-        alert('disconnect');
+        // alert('disconnect');
    });
 
     setBoardSocketCallback(function (data) {
@@ -410,11 +410,20 @@ function init() {
         var newEvents = data.events;
         for (var i = 0; i < newEvents.length; i++) {
             var newEvent = newEvents[i];
-
         }
 
+        var cargoHealth = data.game.cargoHealth;
+        context.fillStyle="#00FF55";
 
-   
+        var margin = 0;
+        var barSpacing = 5;
+        var barWidth = 20;
+        var barHeight = 10;
+
+        for (var i = 0; i < cargoHealth; i++) {
+            context.fillRect(margin + i * (barWidth + barSpacing), margin, barWidth, barHeight);
+        }
+
     });
 }
 
