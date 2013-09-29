@@ -77,6 +77,7 @@
 function drawBackground(context, canvas)
 {
 	context.drawImage(resources.get("/images/mainbg.png"),0,0,canvas.width, canvas.height); 
+
 }
 
 function Cloud(size) {
@@ -152,11 +153,11 @@ function init() {
     console.log("start");
 
     //testing particle emitter
-    var p;
-    var e;
-    var r = createEmitterForBlackSmoke();
-    p = r[0];
-    e = r[1];
+   // var p;
+   // var e;
+   // var r = createEmitterForBlackSmoke();
+   // p = r[0];
+   // e = r[1];
 
 
     setBoardSocketCallback(function (data) {
@@ -236,6 +237,7 @@ function init() {
             } else if (type == 4) {
                 // cloud
                 cloudObjects.push(object);
+                context.restore();
                 continue;
             }
             
@@ -251,7 +253,7 @@ function init() {
 
 
         // clouds
-        for (var i = 0; i < clouds.length; i++) {
+     /*   for (var i = 0; i < clouds.length; i++) {
             var cloud = clouds[i];
             cloud.x -= 1;
         };
@@ -259,7 +261,7 @@ function init() {
             for (var i = 0; i < clouds.length; i++) {
             var cloud = clouds[i];
             cloud.draw(context);
-        };
+        };*/
 
    
     });
@@ -294,7 +296,7 @@ $(document).ready(function(){
 
 
 		//drawBackground(context, canvas);
-		generateClouds();
+		//generateClouds();
 		resources.onReady(init);
 	}
 

@@ -1,8 +1,19 @@
 $(function() {
 	ready();
+
+	$('#knob').on('dragstart', function(event) { event.preventDefault(); });
+	$('#knob').attr('unselectable', 'on')
+                 .css('user-select', 'none')
+                 .on('selectstart', false);
+    $('#pad').attr('unselectable', 'on')
+                 .css('user-select', 'none')
+                 .on('selectstart', false);
 });
 
 function isMobile() {
+	if (window.innerWidth > window.innerHeight) {
+		
+	}
 	if( navigator.userAgent.match(/Android/i)
  		|| navigator.userAgent.match(/webOS/i)
  		|| navigator.userAgent.match(/iPhone/i)
@@ -20,6 +31,7 @@ var swipeStart = null;
 var swipeLast = null;
 var inGame = false;
 var name = null;
+var mouseDown = false;
 function ready () {
 	document.ontouchmove = function(event){
 		event.preventDefault();
@@ -112,23 +124,65 @@ function setupController(data) {
 	showController();
 	$('#handle').text(data['name']);
 	$('#controls').css('background-color', data['color']);
-	$('#controls').click(function(event) {
+	$('#controls').bind('touchstart', function (event, data) {
+		$("#info").html("Bomb");
 		tap();
 	});
-	$('#pad').swipe({
-		swipeStatus:processSwipe
-    });
+	$('#controls').bind('mousedown', function (event, data) {
+		$("#info").html("Bomb");
+		tap();
+	});
+	$('#pad').bind('mousedown', function (event, data) {
+		mouseDown = true;
+		padTouchStart(event);
+		event.stopPropagation();
+	});
+	$('#pad').bind('mousemove', function (event, data) {
+		if(mouseDown) {
+			padTouchMove(event);
+		}
+		event.stopPropagation();
+	});
+	$('#pad').bind('mouseup', function (event, data) {
+		if (mouseDown) {
+			padTouchEnd(event);
+			mouseDown = false;
+		}
+		event.stopPropagation();
+	});
+	$('#pad').bind('mousecancel', function (event, data) {
+		if (mouseDown) {
+			padTouchEnd(event);
+			mouseDown = false;
+		}
+		event.stopPropagation();
+	});
+	$('#pad').bind('touchstart', function (event, data) {
+		padTouchStart(event);
+	});
+	$('#pad').bind('touchmove', function (event) {
+		padTouchMove(event);
+	});
+	$('#pad').bind('touchend', function (event, data) {
+		padTouchEnd(event);
+	});
+	$('#pad').bind('touchcancel', function (event, data) {
+		padTouchEnd(event);
+	});
 }
 
-function processSwipe(event, phase, direction, distance, duration, fingers) {
-	event.stopPropagation();
-	var str = "<h4>Swipe Phase : " + phase + "<br/>";
+function getPointFromEvent(event) {
 	var x = event.pageX;
 	if (!x) {
-		if (event.touches) {
-			var touch = event.touches[0];
-			if (touch) {
-				x = touch.pageX;
+		if (event.originalEvent) {
+			var original = event.originalEvent;
+			if (original.touches) {
+				var touch = original.touches[0];
+				if (touch) {
+					x = touch.pageX;
+				} else {
+					x = 0;
+				}
 			} else {
 				x = 0;
 			}
@@ -138,10 +192,15 @@ function processSwipe(event, phase, direction, distance, duration, fingers) {
 	}
 	var y = event.pageY;
 	if (!y) {
-		if (event.touches) {
-			var touch = event.touches[0];
-			if (touch) {
-				y = touch.pageY;
+		if (event.originalEvent) {
+			var original = event.originalEvent;
+			if (original.touches) {
+				var touch = original.touches[0];
+				if (touch) {
+					y = touch.pageY;
+				} else {
+					y = 0;
+				}
 			} else {
 				y = 0;
 			}
@@ -149,58 +208,56 @@ function processSwipe(event, phase, direction, distance, duration, fingers) {
 			y = 0;
 		}
 	}
-    str += "x: " + x + ", y: " + y  + "<br/>";
-	if (phase == 'start') {
-    	swipeStart = new Object();
-		swipeStart.x = x;
-		swipeStart.y = y;
-		var imgWidth = $("#knob").width();
-		var imgHeight = $("#knob").height();
-	} else if (phase == 'end') {
-		var eventType = 'move';
-		if (direction) {
-			angle = calculateAngle(swipeStart.x, swipeStart.y, swipeLast.x, swipeLast.y);
-			magnitude = calculateMagnitude(swipeStart.x, swipeStart.y, x, y);
-			eventType = 'move';
-			$("#knob").hide();
-			socket.emit("move", {"name": name, "angle" :angle, "magnitude": magnitude});
-			for(i = 1; i < 6; i++) {
-				newMagnitude = magnitude * (5-i) / 5;
-				move(angle, newMagnitude, i*100);
-			}
-		} else {
-			/*eventType = 'tap';
-			centerX = $('#controller').width() / 2;
-			centerY = $('#controller').height() / 2;
-			angle = calculateAngle(centerX, centerY, swipeStart.x, swipeStart.y);
-			magnitude = calculateMagnitude(centerX, centerY, swipeStart.x, swipeStart.y);
-			$("#bomb").show();
-			var imgWidth = $("#bomb").width();
-			var imgHeight = $("#bomb").height();
-			$('#bomb').css({"position":"absolute", "top": (swipeStart.y - imgHeight/2) + "px", "left": (swipeStart.x - imgWidth/2) + "px"});
-			$("#bomb").fadeOut(500);
-			tap(angle, magnitude, 0);*/
-		}
-		swipeStart = null;
-	} else {
-		angle = calculateAngle(swipeStart.x, swipeStart.y, x, y);
+	return [x, y];
+}
+
+function padTouchStart(event) {
+	swipeStart = null;
+	swipeLast = null;
+	var point = getPointFromEvent(event);
+	var x = point[0];
+	var y = point[1];
+	$("#info").html("Touch start " + x + ", " + y);
+	swipeStart = new Object();
+	swipeStart.x = x;
+	swipeStart.y = y;
+}
+
+function padTouchMove(event) {
+	var point = getPointFromEvent(event);
+	var x = point[0];
+	var y = point[1];
+	swipeLast = new Object();
+	swipeLast.x = x;
+	swipeLast.y = y;
+	$("#info").html("Touch move " + x + ", " + y);
+	angle = calculateAngle(swipeStart.x, swipeStart.y, x, y);
+	magnitude = calculateMagnitude(swipeStart.x, swipeStart.y, x, y);
+	var imgWidth = $("#knob").width();
+	var imgHeight = $("#knob").height();
+	$('#knob').show();
+	$('#knob').css({"position":"absolute", "top": (y - imgHeight/2) + "px", "left": (x - imgWidth/2) + "px"});
+	move(angle, magnitude, 0);
+}
+
+function padTouchEnd(event) {
+	var point = getPointFromEvent(event);
+	var x = point[0];
+	var y = point[1];
+	$("#info").html("Touch end");
+	$("#knob").hide();
+	if (swipeLast) {
+		angle = calculateAngle(swipeStart.x, swipeStart.y, swipeLast.x, swipeLast.y);
 		magnitude = calculateMagnitude(swipeStart.x, swipeStart.y, x, y);
-		swipeLast = new Object();
-		swipeLast.x = x;
-		swipeLast.y = y;
-		str += "Angle: " + angle + "<br/>";
-		str += "Magnitude: " + angle + "<br/>";
-		var imgWidth = $("#knob").width();
-		var imgHeight = $("#knob").height();
-		$('#knob').show();
-		$('#knob').css({"position":"absolute", "top": (y - imgHeight/2) + "px", "left": (x - imgWidth/2) + "px"});
-		move(angle, magnitude, 0);
+		eventType = 'move';
+		socket.emit("move", {"name": name, "angle" :angle, "magnitude": magnitude});
+		for(i = 1; i < 6; i++) {
+			newMagnitude = magnitude * (5-i) / 5;
+			move(angle, newMagnitude, i*100);
+		}
 	}
-	str += "Direction from inital touch: " + direction + "<br/>";
-	str += "Distance from inital touch: " + distance + "<br/>";
-	str += "Duration of swipe: " + duration + "<br/>";
-	str += "Fingers used: " + fingers + "<br/></h4>";
-	// $("#info").html(str);
+	swipeStart = null;
+	swipeLast = null;
 }
 
 function move(angle, magnitude, delay) {
@@ -216,7 +273,7 @@ function tap() {
 }
 
 function calculateMagnitude(startX, startY, destinationX, destinationY) {
-	magnitude = Math.sqrt(Math.pow((destinationX-startX), 2), Math.pow((destinationY-startY), 2))
+	magnitude = Math.sqrt(Math.pow((destinationX-startX), 2)+Math.pow((destinationY-startY), 2))
 	return magnitude;
 }
 
