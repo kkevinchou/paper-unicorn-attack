@@ -325,7 +325,9 @@ function init() {
             gameState = 2;
             resetGame();
             drawBackground(context, canvas);
-            // alert("The server is disconnected.");
+
+
+            context.drawImage(resources.get('/images/homeLogo.png'), 250, 300, 507, 47);
 
         }
    });
@@ -621,7 +623,8 @@ $(document).ready(function(){
             '/images/victory_planes.png',
             '/images/victory_dragon_wing_down.png',
             '/images/Meter-Life.png',
-            '/images/Meter-Death.png'
+            '/images/Meter-Death.png',
+            '/images/homeLogo.png'
 
 		]);
 
