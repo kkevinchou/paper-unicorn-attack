@@ -61,5 +61,6 @@ Collisions:
 EventTypes:
 	"dragonDie" - dying dragon
 	"fireballDie" - dying fireball
+	"dragonInjured" - dragon injured by papercut
 	
 	

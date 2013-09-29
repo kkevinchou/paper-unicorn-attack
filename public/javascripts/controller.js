@@ -54,6 +54,7 @@ function showStartPage() {
 	inGame = false;
 	$('#join').unbind('click');
 	$('#join').click(function (data) {
+		$('input#name').blur();
 		joinGame();
 	});
 }
