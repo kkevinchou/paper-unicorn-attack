@@ -163,16 +163,30 @@ function init() {
 
         /// particle stuff
 
-        context.save();
+       // context.save();
         //context.globalCompositeOperation = "lighter";
-        proton.update();
-        context.restore();
+      //  proton.update();
+       // context.restore();
 
         ///
+        var objects = data.game.objects;
+        for (var i = 0; i < objects.length; i++) {
+            var object = objects[i];
 
-        var airplane = data.players[0];
-        context.strokeRect(airplane.x,airplane.y,50,50);
+            var type = object.type;
+            var x = object.x;
+            var y = object.y;
 
+            console.log (x + " " + y);
+
+            context.strokeRect(x, y, 50, 50);
+        };
+
+        //var airplane = data.players[0];
+        //context.strokeRect(airplane.x,airplane.y,50,50);
+
+
+        // clouds
         for (var i = 0; i < clouds.length; i++) {
             var cloud = clouds[i];
             cloud.x -= 1;
