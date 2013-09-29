@@ -317,11 +317,11 @@ function init() {
 
             }
             
+            context.restore();
+
             if (object.name) {
                 context.strokeText(object.name, x, y);
             }
-
-            context.restore();
         };
 
         //var airplane = data.players[0];
