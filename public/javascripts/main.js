@@ -1,12 +1,12 @@
-// shim layer with setTimeout fallback
-/*window.requestAnimFrame = (function(){
+// this "game loop" is for animations on the end game screen, not actual game play
+window.requestAnimFrame = (function(){
   return  window.requestAnimationFrame       ||
           window.webkitRequestAnimationFrame ||
           window.mozRequestAnimationFrame    ||
           function( callback ){
-            window.setTimeout(callback, 1000 / 60);
+            window.setTimeout(callback, 100);
           };
-})();*/
+})();
 
 
 
@@ -148,6 +148,43 @@ function createEmitterForBlackSmoke() {
     return [proton, emitter];
 }
 
+
+
+var gameState = 0; // if game is one, end screen is being displayed
+var victoryDragonFlap = false;
+function animateVictoryDragon() {
+    drawBackground(context, canvas);
+
+    if (victoryDragonFlap) {
+        context.drawImage(resources.get('/images/victory_dragon.png'), 0, 0, 1000, 1400);
+
+    } else {
+        context.drawImage(resources.get('/images/victory_dragon_wing_down.png'), 0, 0, 1000, 1400);
+
+    }
+    victoryDragonFlap = !victoryDragonFlap;
+
+    if (gameState == 1) {
+        requestAnimFrame(animateVictoryDragon);
+
+    }
+
+}
+
+var victoryPlanesY = 0;
+function animateVictoryPlanes() {
+    drawBackground(context, canvas);
+    context.drawImage(resources.get('/images/victory_planes.png'), 0, victoryPlanesY, 1000, 1400);
+    if (victoryPlanesY < 0){
+        victoryPlanesY += 5;
+
+    }
+
+    if (gameState == 1) {
+        requestAnimFrame(animateVictoryPlanes);
+    }
+}
+
 var cloudImagePrefix = "/images/cloud";
 var cloudImageOverlap = 60;
 
@@ -167,18 +204,23 @@ function init() {
     setBoardSocketCallback(function (data) {
         
         if (data.game.ended) {
+            if (gameState == 0) {
+                if (data.game.winner) {
+                    // planes won
+                    victoryPlanesY = -1400;
+                    requestAnimFrame(animateVictoryPlanes);
 
-            if (data.game.winner) {
-                // planes won
-                context.drawImage(resources.get('/images/victory_planes.png'), 0, 0, 1000, 1400);
-            } else {
-                // dragon won
-                context.drawImage(resources.get('/images/victory_dragon.png'), 0, 0, 1000, 1400);
+                } else {
+                    // dragon won
+                     requestAnimFrame(animateVictoryDragon);
 
+                }
             }
-
+            gameState = 1;
             return;
         }
+
+        gameState = 0;
 
         drawBackground(context, canvas);
 
@@ -330,7 +372,8 @@ $(document).ready(function(){
             '/images/cloud2.png',
             '/images/cloud3.png',
             '/images/victory_dragon.png',
-            '/images/victory_planes.png'
+            '/images/victory_planes.png',
+            '/images/victory_dragon_wing_down.png'
 		]);
 
 
