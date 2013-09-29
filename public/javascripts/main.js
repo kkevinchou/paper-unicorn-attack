@@ -74,16 +74,12 @@
 
 
 
-
+var backgroundPattern;
 function drawBackground(context, canvas)
 {
-	context.beginPath();
-    context.rect(0,0,canvas.width, canvas.height);
-    context.fillStyle = 'lightblue';
-    context.fill();
-    context.lineWidth = 1;
-    context.strokeStyle = 'black';
-    context.stroke();		
+	context.rect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = backgroundPattern;
+    context.fill();	
 }
 
 function Cloud(size) {
@@ -155,6 +151,8 @@ function particles() {
 }
 function init() {
     particles();
+    backgroundPattern = context.createPattern(resources.get("/images/mainbg.png"), 'repeat');
+
     console.log("start");
 
 
@@ -181,28 +179,53 @@ function init() {
             var adjustedHeadingInDegrees = ((object.heading - 90) + 360) %360;
 
 
-            //console.log (x + " " + y);
             context.translate(x,y);            
+
+            // if degree change is between 90 and 270, we need to flip the image
+            if (adjustedHeadingInDegrees > 90 && adjustedHeadingInDegrees < 270) {
+                context.scale(-1, 1);
+                adjustedHeadingInDegrees = 520 - adjustedHeadingInDegrees;
+                adjustedHeadingInDegrees %= 360;
+            }
+
+            // so now adjustedHeadingInDegrees is either 0 to 90 or 270 to 360
+            if (adjustedHeadingInDegrees > 50 && adjustedHeadingInDegrees < 180) {
+                adjustedHeadingInDegrees = 50;
+            } 
+
+            if (adjustedHeadingInDegrees > 180 && adjustedHeadingInDegrees < 310) {
+                adjustedHeadingInDegrees = 310;
+            }
             context.rotate(adjustedHeadingInDegrees*Math.PI/180);
             context.translate(-x,-y);            
 
             if (type == 1) {
-                            console.log(adjustedHeadingInDegrees);
+                console.log(adjustedHeadingInDegrees);
 
             }
 
             if (type == 0) {
                 // cargo
-                context.lineWidth = 10;
-                context.strokeRect(x-25, y-25, 50, 50);
+
+                context.drawImage(resources.get("/images/cargo.png"), x-100, y-100, 200, 200);
+
             } else if (type == 1) {
                 // plane
                 context.drawImage(resources.get("/images/plane1.png"), x-50, y-50, 100, 100);
 
             } else if (type == 2) {
                 // dragon
-                context.strokeStyle = '#ff0000';
-                context.strokeRect(x-25, y-25, 50, 50);
+                var img;
+                if (object.frame ==0) {
+                    img = resources.get("/images/dragon1.png");
+                } else if (object.frame == 1) {
+                    img = resources.get("/images/dragon1-down.png");
+                } else if (object.frame == 2) {
+                    img = resources.get("/images/dragon1-breathe.png");
+                }
+                context.drawImage(img, x-50, y-50, 100, 100);
+
+
             } else if (type == 3) {
                 // fireball
                 context.drawImage(resources.get("/images/fireball.png"), x-25, y-25, 50, 50);
@@ -255,7 +278,13 @@ $(document).ready(function(){
 		resources.load([
 		    '/images/cloud.png',
             '/images/fireball.png',
-            '/images/plane1.png'
+            '/images/plane1.png',
+            '/images/dragon1.png',
+            '/images/cargo.png',
+            '/images/darksmoke.png',
+            '/images/mainbg.png',
+            '/images/dragon1-down.png',
+            '/images/dragon1-breathe.png'
 		]);
 
 
