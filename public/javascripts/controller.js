@@ -123,16 +123,20 @@ function showController() {
 		quitGame();
 	});
 	
-	$('#pad').css('background-color', '#00ffff');
+	// $('#pad').css('background-color', '#00ffff');
 	isVert = isVertical();
 	if (isVert) {
 		$("#controls").detach().insertBefore("#pad");
 		$('#pad').removeClass('left').addClass('bottom');
 		$('#controls').removeClass('right').addClass('top');
+		$("body").addClass('portrait');
+		$("body").removeClass('landscape');
 	} else {
 		$("#pad").detach().insertBefore("#controls");
 		$('#pad').removeClass('bottom').addClass('left');
 		$('#controls').removeClass('top').addClass('right');
+		$("body").removeClass('portrait');
+		$("body").addClass('landscape');
 	}
 }
 
@@ -146,7 +150,7 @@ function hideController() {
 function setupController(data) {
 	showController();
 	$('#handle').text(data['name']);
-	$('#controls').css('background-color', data['color']);
+	// $('#controls').css('background-color', data['color']);
 	$('#controls').unbind('touchstart')
 	$('#controls').unbind('mousedown')
 	if ('ontouchstart' in document.documentElement) {
