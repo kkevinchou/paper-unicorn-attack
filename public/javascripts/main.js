@@ -350,7 +350,6 @@ function init() {
             var cloudSectionWidth = (cloud.width + cloudImageOverlap*(size-1))/size;
             var cloudStartX = cloud.x - cloud.width/2.0;
             var cloudXIncrement = cloudSectionWidth - cloudImageOverlap;
-           // console.log(cloudSectionWidth);
             for (var s = 0; s < size; s++) {
                 var p = pattern[s];
                 var x =  cloud.x + s*cloudXIncrement;
