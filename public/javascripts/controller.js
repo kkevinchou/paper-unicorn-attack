@@ -80,6 +80,9 @@ function socketConnected() {
 function showStartPage() {
 	hideController();
 	$('#startPage').show();
+	if ($.cookie('unicorn-name')) {
+		$('input#name').val($.cookie('unicorn-name'));
+	}
 	inGame = false;
 	$('#join').unbind('click');
 	$('#join').click(function (data) {
@@ -97,6 +100,7 @@ function joinGame() {
 	name = $('#name').val();
 	if (name) {
 		socket.emit('join', {"name":name});
+		$.cookie('unicorn-name', name, { expires: 7 });
 		//showController();
 	} else {
 		alert('Enter a name');
