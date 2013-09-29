@@ -320,7 +320,17 @@ function init() {
             context.restore();
 
             if (object.name) {
+                context.save();
+                if (type == 2) {
+                   context.strokeStyle = '#ff0000';
+
+                } else {
+                                    context.strokeStyle = '#0000ff';
+
+                }
                 context.strokeText(object.name, x, y);
+
+                context.restore();
             }
         };
 
