@@ -180,6 +180,9 @@ function init() {
             console.log (x + " " + y);
 
             context.strokeRect(x, y, 50, 50);
+            if (object.name) {
+                context.strokeText(object.name, x + 5, y + 30);
+            }
         };
 
         //var airplane = data.players[0];
