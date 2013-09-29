@@ -4,6 +4,7 @@ $(function () {
 
 var socket = null;
 var boardSocketCallback = null;
+var boardDisconnectCallback = null;
 function setupBoardSocketIO() {
 	socket = io.connect('/board');
 
@@ -16,14 +17,20 @@ function setupBoardSocketIO() {
 		});
 	});
 
-  	// socket.on('config', function (data) {
-    	// alert('config: ' + data['character-type'] + ', ' + data['color']);
-  	// });
+	socket.on('disconnect', function (data) {
+		if (boardDisconnectCallback) {
+			boardDisconnectCallback(data);
+		}
+	});
 }
 
 function setBoardSocketCallback(callback) {
 	boardSocketCallback = callback;
 };
+
+function setBoardDisconnectCallback(callback) {
+	boardDisconnectCallback = callback;
+}
 
 function boardSocketConnected() {
 	
