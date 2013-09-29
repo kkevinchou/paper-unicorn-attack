@@ -369,11 +369,14 @@ function init() {
                 // cargo
 
                 context.drawImage(resources.get("/images/cargo.png"), x-100, y-100, 200, 200);
-                drawParticlesForCargo(object.id, 217, x - 65, y);
+                drawParticlesForCargo(object.id, 217, x - 65, y + 15);
 
             } else if (type == 1) {
                 // plane
-                drawParticlesForPlane(object.id, 217, x, y) ;
+
+                if (object.dashing) {
+                    drawParticlesForPlane(object.id, 217, x, y) ;
+                }
                 context.drawImage(resources.get("/images/plane1.png"), x-50, y-50, 100, 100);
 
             } else if (type == 2) {
@@ -399,14 +402,14 @@ function init() {
 
             if (object.name) {
                 context.save();
+                context.font = 'bold 12pt sans-serif';
                 if (type == 2) {
-                   context.strokeStyle = '#ff0000';
-
+                   context.fillStyle = '#ff0000';
                 } else {
-                    context.strokeStyle = '#0000ff';
+                    context.fillStyle = '#ffffff';
 
                 }
-                context.strokeText(object.name, x, y);
+                context.fillText(object.name, x, y);
 
                 context.restore();
             }

@@ -30,6 +30,9 @@ function ready () {
     $('#pad').attr('unselectable', 'on')
                  .css('user-select', 'none')
                  .on('selectstart', false);
+	$('#controls').attr('unselectable', 'on')
+                 .css('user-select', 'none')
+                 .on('selectstart', false);
                  
 	$( window ).resize(function() {
 		if (inGame) {
@@ -61,9 +64,9 @@ function setupSocketIO() {
   		$("#info").html(text +"<br> tap result " + data['result']);
     	var result = data['result'];
     	if (result) {
-    		//setTimeout(function() {
-			//	playSound();
-			//}, 1000);
+//     		setTimeout(function() {
+// 				playSound();
+// 			}, 1000);
     	}
   	});
 }
@@ -77,6 +80,9 @@ function socketConnected() {
 function showStartPage() {
 	hideController();
 	$('#startPage').show();
+	if ($.cookie('unicorn-name')) {
+		$('input#name').val($.cookie('unicorn-name'));
+	}
 	inGame = false;
 	$('#join').unbind('click');
 	$('#join').click(function (data) {
@@ -93,7 +99,9 @@ function hideStartPage() {
 function joinGame() {
 	name = $('#name').val();
 	if (name) {
+		name = name.substr(0, 10);
 		socket.emit('join', {"name":name});
+		$.cookie('unicorn-name', name, { expires: 7 });
 		//showController();
 	} else {
 		alert('Enter a name');
@@ -268,7 +276,7 @@ function padTouchEnd(event) {
 	$("#knob").hide();
 	if (swipeLast) {
 		angle = calculateAngle(swipeStart.x, swipeStart.y, swipeLast.x, swipeLast.y);
-		magnitude = calculateMagnitude(swipeStart.x, swipeStart.y, x, y);
+		magnitude = calculateMagnitude(swipeStart.x, swipeStart.y, swipeLast.x, swipeLast.y);
 		eventType = 'move';
 		socket.emit("move", {"name": name, "angle" :angle, "magnitude": magnitude});
 		for(i = 1; i < 6; i++) {
