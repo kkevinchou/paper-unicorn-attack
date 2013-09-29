@@ -151,7 +151,6 @@ function createEmitterForBlackSmoke() {
 var cloudImagePrefix = "/images/cloud";
 var cloudImageOverlap = 60;
 
-var gameState = 1; // 1 means the game is going on
 function init() {
    // particles();
 
@@ -166,10 +165,8 @@ function init() {
 
 
     setBoardSocketCallback(function (data) {
-        if (gameState == 0) return;
         
         if (data.game.ended) {
-            gameState = 0; // 0 means game is over so don't redraw
 
             if (data.game.winner) {
                 // planes won
