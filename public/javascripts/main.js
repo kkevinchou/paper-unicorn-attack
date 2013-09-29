@@ -459,15 +459,20 @@ function init() {
         var cargoHealth = data.game.cargoHealth;
         context.fillStyle="#00FF55";
 
-        var margin = 0;
-        var barSpacing = 5;
+        var margin = 10;
+        var barSpacing = 3;
         var barWidth = 20;
         var barHeight = 10;
 
-        for (var i = 0; i < cargoHealth; i++) {
-            context.fillRect(margin + i * (barWidth + barSpacing), margin, barWidth, barHeight);
+        for (var i = 0; i < 20; i++) {
+            context.drawImage(resources.get("/images/Meter-Death.png"), margin + i * (barWidth + barSpacing), margin, barWidth, barHeight)
         }
 
+
+        for (var i = 0; i < cargoHealth; i++) {
+            // context.fillRect(margin + i * (barWidth + barSpacing), margin, barWidth, barHeight);
+            context.drawImage(resources.get("/images/Meter-Life.png"), margin + i * (barWidth + barSpacing), margin, barWidth, barHeight)
+        }
     });
 }
 
@@ -502,7 +507,10 @@ $(document).ready(function(){
             '/images/cloud3.png',
             '/images/victory_dragon.png',
             '/images/victory_planes.png',
-            '/images/victory_dragon_wing_down.png'
+            '/images/victory_dragon_wing_down.png',
+            '/images/Meter-Life.png',
+            '/images/Meter-Death.png'
+
 		]);
 
 
