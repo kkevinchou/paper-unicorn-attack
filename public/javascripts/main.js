@@ -74,12 +74,9 @@
 
 
 
-var backgroundPattern;
 function drawBackground(context, canvas)
 {
-	context.rect(0, 0, canvas.width, canvas.height);
-    context.fillStyle = backgroundPattern;
-    context.fill();	
+	context.drawImage(resources.get("/images/mainbg.png"),0,0,canvas.width, canvas.height); 
 }
 
 function Cloud(size) {
@@ -118,11 +115,11 @@ function generateClouds() {
 
 var context;
 var canvas;
-var proton;
-var emitter;
-function particles() {
-    proton = new Proton();
-    emitter = new Proton.Emitter();
+//var proton;
+//var emitter;
+function createEmitterForBlackSmoke() {
+    var proton = new Proton();
+    var emitter = new Proton.Emitter();
     //set Rate
     emitter.rate = new Proton.Rate(Proton.getSpan(0,1), 0.05);
     //add Initialize
@@ -131,8 +128,8 @@ function particles() {
     emitter.addInitialize(new Proton.Velocity(1, Proton.getSpan(125, 135), 'polar'));
     //add Behaviour
 
-    //emitter.addInitialize(new Proton.ImageTarget(resources.get('/images/fireball.png')));
-    emitter.addBehaviour(new Proton.Color('ff0000', 'random'));
+    emitter.addInitialize(new Proton.ImageTarget(resources.get('/images/particle1.png')));
+     emitter.addBehaviour(new Proton.Color('ff0000', 'random'));
     emitter.addBehaviour(new Proton.Alpha(0.9, 0));
     //set emitter position
     emitter.p.x = canvas.width / 2;
@@ -147,13 +144,19 @@ function particles() {
         
     };
     renderer.start();
-    console.log(renderer);
+    return [proton, emitter];
 }
 function init() {
-    particles();
-    backgroundPattern = context.createPattern(resources.get("/images/mainbg.png"), 'repeat');
+   // particles();
 
     console.log("start");
+
+    //testing particle emitter
+    var p;
+    var e;
+    var r = createEmitterForBlackSmoke();
+    p = r[0];
+    e = r[1];
 
 
     setBoardSocketCallback(function (data) {
@@ -163,7 +166,7 @@ function init() {
 
        // context.save();
         //context.globalCompositeOperation = "lighter";
-      //  proton.update();
+       // p.update();
        // context.restore();
 
         ///
@@ -284,7 +287,8 @@ $(document).ready(function(){
             '/images/darksmoke.png',
             '/images/mainbg.png',
             '/images/dragon1-down.png',
-            '/images/dragon1-breathe.png'
+            '/images/dragon1-breathe.png',
+            '/images/particle1.png'
 		]);
 
 
