@@ -99,6 +99,7 @@ function hideStartPage() {
 function joinGame() {
 	name = $('#name').val();
 	if (name) {
+		name = name.substr(0, 10);
 		socket.emit('join', {"name":name});
 		$.cookie('unicorn-name', name, { expires: 7 });
 		//showController();
