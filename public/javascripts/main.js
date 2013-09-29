@@ -561,12 +561,15 @@ function init() {
         }
 
 		// endlessly loop cargo ambiance sound
-		var cargo_ambiance = new Audio("sounds/cargo_plane_ambiance.wav");
+		/*var cargo_ambiance = new Audio("sounds/cargo_plane_ambiance.wav");
 		cargo_ambiance.addEventListener('ended', function() {
 			this.currentTime = 0;
 			this.play();
 		}, false);
 		cargo_ambiance.play();
+		var cargo_ambiance = new Audio("sounds/cargo_plane_ambiance.wav");
+		cargo_ambiance.loop = true;
+		cargo_ambiance.play();*/
 
         var cargoHealth = data.game.cargoHealth;
         context.fillStyle="#00FF55";
