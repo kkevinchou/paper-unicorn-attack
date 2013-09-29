@@ -2,7 +2,7 @@ body {
 	padding: 0px;
 	margin: 0px;
 	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-	background-image:url('../images/bg.png');
+	background-image:url('../images/BG-Remote.png');
 }
 
 a {
@@ -37,6 +37,11 @@ img.logo {
 
 #header {
 	vertical-align:middle;
+}
+
+#header span {
+	vertical-align:middle;
+	color: white;
 }
 
 #join, #join:active {
@@ -84,6 +89,64 @@ img.logo {
 #controller {
 	width: 100%;
 	height: 100%;
+	background-color: rgba(255, 255, 255, 0);
+}
+
+#pad {
+	background-color: rgba(255, 255, 255, 0);
+}
+
+#backgroundContainer {
+	background-color: rgba(255, 255, 255, 0.2);
+	border: 2px solid rgba(255, 255, 255, 0.6);
+	height: 90%;
+	width: 90%;
+	margin: auto;
+}
+
+#fireContainer {
+	background-color: rgba(255, 255, 255, 0.4);
+	border: 2px solid rgba(255, 255, 255, 0.6);
+	margin: auto;
+	margin-top: 30px;
+	height: 80%;
+	width: 80%;
+
+	border-top-left-radius: 50% 20%;
+	border-top-right-radius: 50% 20%;
+	border-bottom-left-radius: 50% 20%;
+	border-bottom-right-radius: 50% 20%;
+}
+
+.landscape #fireContainer {
+	margin-left: 0;
+}
+
+.portrait #fireContainer {
+	border-top-left-radius: 20% 50%;
+	border-top-right-radius: 20% 50%;
+	border-bottom-left-radius: 20% 50%;
+	border-bottom-right-radius: 20% 50%;
+	margin-top: 10px;
+	height: 80%;
+	width: 90%;
+}
+
+
+#fireImage {
+	margin: auto;
+	width: 100%;
+	height: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.landscape #fireImage {
+	background-image:url('../images/remote-fire-landscape.png');
+}
+
+.portrait #fireImage {
+	background-image:url('../images/remote-fire-portrait.png');
 }
 
 .left {
@@ -100,7 +163,7 @@ img.logo {
 
 .top {
 	width: 100%;
-	height: 30%;
+	height: 25%;
 }
 
 .bottom {
