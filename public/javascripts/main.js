@@ -464,12 +464,23 @@ function init() {
                 }
 
                 var img = null;
-                if (object.frame ==0) {
-                    img = resources.get("/images/dragon1.png");
-                } else if (object.frame == 1) {
-                    img = resources.get("/images/dragon1-down.png");
-                } else if (object.frame == 2) {
-                    img = resources.get("/images/dragon1-breathe.png");
+                if (object.injured) {
+                    if (object.frame ==0) {
+                        img = resources.get("/images/dragon1-injured.png");
+                    } else if (object.frame == 1) {
+                        img = resources.get("/images/dragon1-injured-down.png");
+                    } else if (object.frame == 2) {
+                        img = resources.get("/images/dragon1-injured-breathe.png");
+                    }
+                } else {
+                    if (object.frame ==0) {
+                        img = resources.get("/images/dragon1.png");
+                    } else if (object.frame == 1) {
+                        img = resources.get("/images/dragon1-down.png");
+                    } else if (object.frame == 2) {
+                        img = resources.get("/images/dragon1-breathe.png");
+                    }
+
                 }
                 context.drawImage(img, x-50, y-50, 100, 100);
 
@@ -592,11 +603,14 @@ $(document).ready(function(){
             '/images/fireball.png',
             '/images/plane1.png',
             '/images/dragon1.png',
+            '/images/dragon1-injured.png',
             '/images/cargo.png',
             '/images/darksmoke.png',
             '/images/mainbg.png',
             '/images/dragon1-down.png',
             '/images/dragon1-breathe.png',
+            '/images/dragon1-injured-down.png',
+            '/images/dragon1-injured-breathe.png',
             '/images/particle1.png',
             '/images/particle2.png',
             '/images/Particle-03.png',
