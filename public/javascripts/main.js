@@ -118,7 +118,7 @@ var context;
 var canvas;
 //var proton;
 //var emitter;
-function createEmitterForBlackSmoke() {
+function createEmitterForTrailingSmoke() {
     var proton = new Proton();
     var emitter = new Proton.Emitter();
     //set Rate
@@ -129,8 +129,8 @@ function createEmitterForBlackSmoke() {
     emitter.addInitialize(new Proton.Velocity(1, Proton.getSpan(125, 135), 'polar'));
     //add Behaviour
 
-    emitter.addInitialize(new Proton.ImageTarget(resources.get('/images/particle1.png')));
-     emitter.addBehaviour(new Proton.Color('ff0000', 'random'));
+    emitter.addInitialize(new Proton.ImageTarget(resources.get('/images/particle2.png')));
+     //emitter.addBehaviour(new Proton.Color('ff0000', 'random'));
     emitter.addBehaviour(new Proton.Alpha(0.9, 0));
     //set emitter position
     emitter.p.x = canvas.width / 2;
@@ -142,7 +142,7 @@ function createEmitterForBlackSmoke() {
     // add canvas renderer
     var renderer = new Proton.Renderer('canvas', proton, canvas);
     renderer.onProtonUpdate = function() {
-        
+        //noop
     };
     renderer.start();
     return [proton, emitter];
@@ -201,6 +201,30 @@ function animateVictoryPlanes() {
 var cloudImagePrefix = "/images/cloud";
 var cloudImageOverlap = 60;
 
+var existingParticleEmitters = {};
+
+function resetGame() {
+    // clear array
+    existingParticleEmitters = {};
+}
+
+function drawParticlesForPlane(id, angle, x, y) {
+    var particleData = [];
+    if (id in existingParticleEmitters) {
+        particleData = existingParticleEmitters[id];
+    } else {
+        particleData = createEmitterForTrailingSmoke();
+        existingParticleEmitters[id] = particleData;
+    }
+    var proton = particleData[0];
+    var emitter = particleData[1];
+
+    emitter.p.x = x;
+    emitter.p.y = y;
+    emitter.rotation = angle;
+    proton.update();
+}
+
 function init() {
    // particles();
 
@@ -215,7 +239,7 @@ function init() {
 
 
    setBoardDisconnectCallback(function (data) {
-        alert('disconnect');
+        // alert('disconnect');
    });
 
     setBoardSocketCallback(function (data) {
@@ -239,6 +263,9 @@ function init() {
             return;
         }
 
+        if (gameState == 1) {
+            resetGame();
+        }
         gameState = 0;
 
         drawBackground(context, canvas);
@@ -300,7 +327,10 @@ function init() {
 
             } else if (type == 1) {
                 // plane
+                drawParticlesForPlane(object.id, 217, x, y) ;
                 context.drawImage(resources.get("/images/plane1.png"), x-50, y-50, 100, 100);
+
+
 
             } else if (type == 2) {
                 // dragon
@@ -329,7 +359,7 @@ function init() {
                    context.strokeStyle = '#ff0000';
 
                 } else {
-                                    context.strokeStyle = '#0000ff';
+                    context.strokeStyle = '#0000ff';
 
                 }
                 context.strokeText(object.name, x, y);
@@ -380,11 +410,20 @@ function init() {
         var newEvents = data.events;
         for (var i = 0; i < newEvents.length; i++) {
             var newEvent = newEvents[i];
-
         }
 
+        var cargoHealth = data.game.cargoHealth;
+        context.fillStyle="#00FF55";
 
-   
+        var margin = 0;
+        var barSpacing = 5;
+        var barWidth = 20;
+        var barHeight = 10;
+
+        for (var i = 0; i < cargoHealth; i++) {
+            context.fillRect(margin + i * (barWidth + barSpacing), margin, barWidth, barHeight);
+        }
+
     });
 }
 
@@ -412,6 +451,7 @@ $(document).ready(function(){
             '/images/dragon1-down.png',
             '/images/dragon1-breathe.png',
             '/images/particle1.png',
+            '/images/particle2.png',
             '/images/cloud1.png',
             '/images/cloud2.png',
             '/images/cloud3.png',

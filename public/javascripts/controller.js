@@ -21,6 +21,7 @@ function ready () {
 	document.ontouchmove = function(event){
 		event.preventDefault();
 	}
+	//document.getElementById('sound').load();
 
 	$('#knob').on('dragstart', function(event) { event.preventDefault(); });
 	$('#knob').attr('unselectable', 'on')
@@ -53,6 +54,17 @@ function setupSocketIO() {
 
   	socket.on('config', function (data) {
     	setupController(data);
+  	});
+  	
+  	socket.on('tap', function (data) {
+  		var text = $("#info").html();
+  		$("#info").html(text +"<br> tap result " + data['result']);
+    	var result = data['result'];
+    	if (result) {
+    		//setTimeout(function() {
+			//	playSound();
+			//}, 1000);
+    	}
   	});
 }
 
@@ -296,7 +308,7 @@ function calculateAngle(startX, startY, destinationX, destinationY) {
 	return angle;
 }
 
-function playSound(url){ 
+function playSound(){ 
 	document.getElementById('sound').play();
 	document.getElementById('sound').currentTime = 0;
 }
