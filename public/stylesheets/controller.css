@@ -132,7 +132,6 @@ img.logo {
 	width: 90%;
 }
 
-
 #fireImage {
 	margin: auto;
 	width: 100%;
@@ -141,12 +140,38 @@ img.logo {
 	background-position: center;
 }
 
-.landscape #fireImage {
+#nameContainer {
+	width: 100%;
+	height: 100%;
+	background-repeat: no-repeat;
+	background-position: center 95%;
+}
+.landscape #nameContainer {
+	background-position: 10% 95%;
+}
+
+.dragon #nameContainer {
+	background-image:url('../images/remote-text-dragon.png');
+}
+
+.unicorn #nameContainer {
+	background-image:url('../images/remote-text-unicorn.png');
+}
+
+.landscape.dragon #fireImage {
 	background-image:url('../images/remote-fire-landscape.png');
 }
 
-.portrait #fireImage {
+.portrait.dragon #fireImage {
 	background-image:url('../images/remote-fire-portrait.png');
+}
+
+.landscape.unicorn #fireImage {
+	background-image:url('../images/remote-dash-landscape.png');
+}
+
+.portrait.unicorn #fireImage {
+	background-image:url('../images/remote-dash-portrait.png');
 }
 
 .left {

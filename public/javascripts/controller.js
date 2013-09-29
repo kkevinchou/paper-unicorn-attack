@@ -150,6 +150,14 @@ function hideController() {
 function setupController(data) {
 	showController();
 	$('#handle').text(data['name']);
+
+	if (data['character-type'] == 'dragon') {
+		$("body").removeClass('unicorn');
+		$("body").addClass('dragon');
+	} else {
+		$("body").addClass('unicorn');
+		$("body").removeClass('dragon');
+	}
 	// $('#controls').css('background-color', data['color']);
 	$('#controls').unbind('touchstart')
 	$('#controls').unbind('mousedown')
