@@ -17,10 +17,12 @@ var inGame = false;
 var name = null;
 var mouseDown = false;
 var isVert = false;
+var tapInProgress = false;
 function ready () {
 	document.ontouchmove = function(event){
 		event.preventDefault();
 	}
+	document.getElementById('sound').load();
 
 	$('#knob').on('dragstart', function(event) { event.preventDefault(); });
 	$('#knob').attr('unselectable', 'on')
@@ -53,6 +55,13 @@ function setupSocketIO() {
 
   	socket.on('config', function (data) {
     	setupController(data);
+  	});
+  	
+  	socket.on('tap', function (data) {
+    	var result = data['result'];
+    	if (result == 'success') {
+    		tapInProgress = false;
+    	}
   	});
 }
 
@@ -275,10 +284,13 @@ function move(angle, magnitude, delay) {
 }
 
 function tap() {
-	setTimeout(function() {
-		playSound();
-		socket.emit("tap", {"name": name});
-	}, 0);
+	if (!tapInProgress) {
+		setTimeout(function() {
+			playSound();
+			socket.emit("tap", {"name": name});
+		}, 0);
+		tapInProgress = true;
+	}
 }
 
 function calculateMagnitude(startX, startY, destinationX, destinationY) {
