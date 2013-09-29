@@ -38,6 +38,8 @@ function ready () {
 		if (inGame) {
 			if (isVertical() != isVert) {
 				showController();
+				centerKnob();
+				$('#knob').show();
 				isVert = isVertical();
 			}
 		}
@@ -142,7 +144,7 @@ function showController() {
 
 function hideController() {
 	$('#controller').hide();
-	$('#knob').hide();
+	// $('#knob').hide();
 	$('#bomb').hide();
 	$('#quit').unbind('click');
 }
@@ -158,6 +160,9 @@ function setupController(data) {
 		$("body").addClass('unicorn');
 		$("body").removeClass('dragon');
 	}
+	centerKnob();
+	$('#knob').show();
+	
 	// $('#controls').css('background-color', data['color']);
 	$('#controls').unbind('touchstart')
 	$('#controls').unbind('mousedown')
@@ -285,7 +290,9 @@ function padTouchEnd(event) {
 	var x = point[0];
 	var y = point[1];
 	//$("#info").html("Touch end");
-	$("#knob").hide();
+	// $("#knob").hide();
+
+	centerKnob();
 	if (swipeLast) {
 		angle = calculateAngle(swipeStart.x, swipeStart.y, swipeLast.x, swipeLast.y);
 		magnitude = calculateMagnitude(swipeStart.x, swipeStart.y, swipeLast.x, swipeLast.y);
@@ -298,6 +305,14 @@ function padTouchEnd(event) {
 	}
 	swipeStart = null;
 	swipeLast = null;
+}
+
+function centerKnob() {
+	var centerX = $("#backgroundContainer").offset().left + $("#backgroundContainer").width() / 2;
+	var centerY = $("#backgroundContainer").offset().top + $("#backgroundContainer").height() / 2;
+	var imgWidth = $("#knob").width();
+	var imgHeight = $("#knob").height();
+	$('#knob').css({"position":"absolute", "top": Math.round(centerY - imgHeight/2) + "px", "left": Math.round(centerX - imgWidth/2) + "px"});
 }
 
 function move(angle, magnitude, delay) {
@@ -314,11 +329,15 @@ function tap() {
 }
 
 function calculateMagnitude(startX, startY, destinationX, destinationY) {
+	startX = $("#backgroundContainer").offset().left + $("#backgroundContainer").width() / 2;
+	startY = $("#backgroundContainer").offset().top + $("#backgroundContainer").height() / 2;
 	magnitude = Math.sqrt(Math.pow((destinationX-startX), 2)+Math.pow((destinationY-startY), 2))
 	return magnitude;
 }
 
 function calculateAngle(startX, startY, destinationX, destinationY) {
+	startX = $("#backgroundContainer").offset().left + $("#backgroundContainer").width() / 2;
+	startY = $("#backgroundContainer").offset().top + $("#backgroundContainer").height() / 2;
 	angle = Math.atan((destinationY-startY) / (destinationX-startX)) * 180 / Math.PI;
 	if (destinationX > startX) {
 		angle += 90;
