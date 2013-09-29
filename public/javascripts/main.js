@@ -283,9 +283,10 @@ function init() {
             var cloudSectionWidth = (cloud.width + cloudImageOverlap*(size-1))/size;
             var cloudStartX = cloud.x - cloud.width/2.0;
             var cloudXIncrement = cloudSectionWidth - cloudImageOverlap;
-
+            console.log(cloudSectionWidth);
             for (var s = 0; s < size; s++) {
                 var cloudImage = cloudImagePrefix + (pattern[s] + 1) + ".png";
+
                 context.drawImage(resources.get("/images/cloud.png"), cloud.x + s*cloudXIncrement, cloud.y - cloudHeight/2.0, cloudSectionWidth, cloudHeight);
             }
         };
