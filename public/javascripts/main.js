@@ -157,10 +157,10 @@ function animateVictoryDragon() {
     drawBackground(context, canvas);
 
     if (victoryDragonFlap) {
-        context.drawImage(resources.get('/images/victory_dragon.png'), 0, victoryY, 1000, 1400);
+        context.drawImage(resources.get('/images/victory_dragon.png'), 0, victoryY, 1000, 1103);
 
     } else {
-        context.drawImage(resources.get('/images/victory_dragon_wing_down.png'), 0, victoryY, 1000, 1400);
+        context.drawImage(resources.get('/images/victory_dragon_wing_down.png'), 0, victoryY, 1000, 1103);
 
     }
     wingDelay ++;
@@ -171,7 +171,7 @@ function animateVictoryDragon() {
 
     }
 
-    if (victoryY > 600 - 1400){
+    if (victoryY > 600 - 1103){
         victoryY -= 5;
 
         if (gameState == 1) {
@@ -218,7 +218,7 @@ function init() {
         
         if (data.game.ended) {
             if (gameState == 0) {
-                if (false) {
+                if (data.game.winner) {
                     // planes won
                     victoryY = -1400;
                     requestAnimFrame(animateVictoryPlanes);
