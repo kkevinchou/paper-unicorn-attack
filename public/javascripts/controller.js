@@ -92,20 +92,36 @@ function setupController(data) {
 
 function processSwipe(event, phase, direction, distance, duration, fingers) {
 	var str = "<h4>Swipe Phase : " + phase + "<br/>";
-    str += "pagex: " + event.pageX + ", y: " + event.pageY  + "<br/>";
-    str += "clientx: " + event.clientX + ", y: " + event.clientY  + "<br/>";
-    str += "x: " + event.x + ", y: " + event.y  + "<br/>";
+	var x = event.pageX;
+	if (!x) {
+		var touch = event.touches[0];
+		if (touch) {
+			x = touch.pageX;
+		} else {
+			x = 0;
+		}
+	}
+	var y = event.pageY;
+	if (!y) {
+		var touch = event.touches[0];
+		if (touch) {
+			y = touch.pageY;
+		} else {
+			y = 0;
+		}
+	}
+    str += "x: " + x + ", y: " + y  + "<br/>";
 	if (phase == 'start') {
     	swipeStart = new Object();
-		swipeStart.x = event.pageX;
-		swipeStart.y = event.pageY;
+		swipeStart.x = x;
+		swipeStart.y = y;
 		var imgWidth = $("#pad").width();
 		var imgHeight = $("#pad").height();
 	} else if (phase == 'end') {
 		var eventType = 'move';
 		if (direction) {
-			angle = calculateAngle(swipeStart.x, swipeStart.y, event.pageX, event.pageY);
-			magnitude = calculateMagnitude(swipeStart.x, swipeStart.y, event.pageX, event.pageY);
+			angle = calculateAngle(swipeStart.x, swipeStart.y, x, y);
+			magnitude = calculateMagnitude(swipeStart.x, swipeStart.y, x, y);
 			eventType = 'move';
 			$("#pad").fadeOut(500);
 		} else {
@@ -119,16 +135,19 @@ function processSwipe(event, phase, direction, distance, duration, fingers) {
 			var imgHeight = $("#bomb").height();
 			$('#bomb').css({"position":"absolute", "top": (swipeStart.y - imgHeight/2) + "px", "left": (swipeStart.x - imgWidth/2) + "px"});
 			$("#bomb").fadeOut(500);
+			socket.emit("tap", {"name": name, "angle" :angle, "magnitude": magnitude});
 		}
-		socket.emit(eventType, {"name": name, "angle" :angle, "magnitude": magnitude});
 		swipeStart = null;
 	} else {
-		angle = calculateAngle(swipeStart.x, swipeStart.y, event.pageX, event.pageY);
+		angle = calculateAngle(swipeStart.x, swipeStart.y, x, y);
+		magnitude = calculateMagnitude(swipeStart.x, swipeStart.y, x, y);
 		str += "Angle: " + angle + "<br/>";
+		str += "Magnitude: " + angle + "<br/>";
 		var imgWidth = $("#pad").width();
 		var imgHeight = $("#pad").height();
 		$('#pad').show();
-		$('#pad').css({"position":"absolute", "top": (event.pageY - imgHeight/2) + "px", "left": (event.pageX - imgWidth/2) + "px"});
+		$('#pad').css({"position":"absolute", "top": (y - imgHeight/2) + "px", "left": (x - imgWidth/2) + "px"});
+		socket.emit("move", {"name": name, "angle" :angle, "magnitude": magnitude});
 	}
 	str += "Direction from inital touch: " + direction + "<br/>";
 	str += "Distance from inital touch: " + distance + "<br/>";
