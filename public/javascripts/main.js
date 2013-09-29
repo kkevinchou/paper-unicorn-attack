@@ -174,9 +174,16 @@ function init() {
         var objects = data.game.objects;
         var cloudObjects = [];
         for (var i = 0; i < objects.length; i++) {
-            context.save();
             var object = objects[i];
 
+            (type == 4) {
+                // cloud
+                cloudObjects.push(object);
+                continue;
+            }
+
+            context.save();
+            
             var type = object.type;
             var x = object.x;
             var y = object.y;
@@ -234,11 +241,6 @@ function init() {
                 // fireball
                 context.drawImage(resources.get("/images/fireball.png"), x-25, y-25, 50, 50);
 
-            } else if (type == 4) {
-                // cloud
-                cloudObjects.push(object);
-                context.restore();
-                continue;
             }
             
             if (object.name) {
@@ -290,7 +292,10 @@ $(document).ready(function(){
             '/images/mainbg.png',
             '/images/dragon1-down.png',
             '/images/dragon1-breathe.png',
-            '/images/particle1.png'
+            '/images/particle1.png',
+            '/images/cloud1.png',
+            '/images/cloud2.png',
+            '/images/cloud3.png'
 		]);
 
 
