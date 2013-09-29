@@ -152,37 +152,50 @@ function createEmitterForBlackSmoke() {
 
 var gameState = 0; // if game is one, end screen is being displayed
 var victoryDragonFlap = false;
+var wingDelay = 0;
 function animateVictoryDragon() {
     drawBackground(context, canvas);
 
     if (victoryDragonFlap) {
-        context.drawImage(resources.get('/images/victory_dragon.png'), 0, 0, 1000, 1400);
+        context.drawImage(resources.get('/images/victory_dragon.png'), 0, victoryY, 1000, 1400);
 
     } else {
-        context.drawImage(resources.get('/images/victory_dragon_wing_down.png'), 0, 0, 1000, 1400);
+        context.drawImage(resources.get('/images/victory_dragon_wing_down.png'), 0, victoryY, 1000, 1400);
 
     }
-    victoryDragonFlap = !victoryDragonFlap;
+    wingDelay ++;
 
-    if (gameState == 1) {
-        requestAnimFrame(animateVictoryDragon);
+    if (wingDelay > 15) {
+        wingDelay = 0;
+            victoryDragonFlap = !victoryDragonFlap;
 
+    }
+
+    if (victoryY > 600 - 1400){
+        victoryY -= 5;
+
+        if (gameState == 1) {
+            requestAnimFrame(animateVictoryDragon);
+
+        }
     }
 
 }
 
-var victoryPlanesY = 0;
+var victoryY = 0;
 function animateVictoryPlanes() {
     drawBackground(context, canvas);
-    context.drawImage(resources.get('/images/victory_planes.png'), 0, victoryPlanesY, 1000, 1400);
-    if (victoryPlanesY < 0){
-        victoryPlanesY += 5;
+    context.drawImage(resources.get('/images/victory_planes.png'), 0, victoryY, 1000, 1400);
+    if (victoryY < 0){
+        victoryY += 5;
+
+        if (gameState == 1) {
+            requestAnimFrame(animateVictoryPlanes);
+        }
 
     }
 
-    if (gameState == 1) {
-        requestAnimFrame(animateVictoryPlanes);
-    }
+
 }
 
 var cloudImagePrefix = "/images/cloud";
@@ -205,13 +218,15 @@ function init() {
         
         if (data.game.ended) {
             if (gameState == 0) {
-                if (data.game.winner) {
+                if (false) {
                     // planes won
-                    victoryPlanesY = -1400;
+                    victoryY = -1400;
                     requestAnimFrame(animateVictoryPlanes);
 
                 } else {
                     // dragon won
+                    victoryY = 600;
+
                      requestAnimFrame(animateVictoryDragon);
 
                 }
