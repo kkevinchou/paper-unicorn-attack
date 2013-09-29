@@ -221,7 +221,7 @@ function drawParticlesForPlane(id, angle, x, y) {
 
     emitter.p.x = x;
     emitter.p.y = y;
-    proton.rotation = angle;
+    emitter.rotation = angle;
     proton.update();
 }
 
@@ -327,10 +327,9 @@ function init() {
 
             } else if (type == 1) {
                 // plane
+                drawParticlesForPlane(object.id, 217, x, y) ;
                 context.drawImage(resources.get("/images/plane1.png"), x-50, y-50, 100, 100);
 
-                // draw plane particles!
-                drawParticlesForPlane(object.id, adjustedHeadingInDegrees*Math.PI/180, x, y) ;
 
 
             } else if (type == 2) {
@@ -360,7 +359,7 @@ function init() {
                    context.strokeStyle = '#ff0000';
 
                 } else {
-                                    context.strokeStyle = '#0000ff';
+                    context.strokeStyle = '#0000ff';
 
                 }
                 context.strokeText(object.name, x, y);
