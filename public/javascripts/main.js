@@ -170,7 +170,9 @@ function init() {
 
         ///
         var objects = data.game.objects;
+        var cloudObjects = [];
         for (var i = 0; i < objects.length; i++) {
+            context.save();
             var object = objects[i];
 
             var type = object.type;
@@ -179,10 +181,33 @@ function init() {
 
             console.log (x + " " + y);
 
-            context.strokeRect(x, y, 50, 50);
+            if (type == 0) {
+                // cargo
+                context.lineWidth = 10;
+                context.strokeRect(x, y, 50, 50);
+            } else if (type == 1) {
+                // plane
+                context.drawImage(resources.get("/images/plane1.png"), x, y, 100, 100);
+
+            } else if (type == 2) {
+                // dragon
+                context.strokeStyle = '#ff0000';
+                context.strokeRect(x, y, 50, 50);
+            } else if (type == 3) {
+                // fireball
+                context.drawImage(resources.get("/images/fireball.png"), x, y, 50, 50);
+
+            } else if (type == 4) {
+                // cloud
+                cloudObjects.push(object);
+                continue;
+            }
+            
             if (object.name) {
                 context.strokeText(object.name, x + 5, y + 30);
             }
+
+            context.restore();
         };
 
         //var airplane = data.players[0];
@@ -219,7 +244,8 @@ $(document).ready(function(){
 
 		resources.load([
 		    '/images/cloud.png',
-            '/images/fireball.png'
+            '/images/fireball.png',
+            '/images/plane1.png'
 		]);
 
 
