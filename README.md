@@ -7,3 +7,10 @@ Installing Node.js on Mac:
   3. Clone this repo
   4. Navigate to repo using the terminal
   5. Run "npm install" to install node libraries
+
+TO DO LIST:
+====================
+
+Flashing for invulnerable
+Controls being reversed
+Controls magnitude being weird (Chrome)

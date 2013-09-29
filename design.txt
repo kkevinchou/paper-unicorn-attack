@@ -60,7 +60,10 @@ Collisions:
 		
 EventTypes:
 	"dragonDie" - dying dragon
-	"fireballDie" - dying fireball
 	"dragonInjured" - dragon injured by papercut
+	"fireballExplode" - dying fireball
 	"fighterInjured" - fighter injured by dragon
+	"fighterDie" - dying fighter
+	"cargoDie" - dying cargo plane 
+	"cargoInjured" - cargo plane injured by fireball""
 	

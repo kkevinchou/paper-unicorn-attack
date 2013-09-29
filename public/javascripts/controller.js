@@ -30,6 +30,9 @@ function ready () {
     $('#pad').attr('unselectable', 'on')
                  .css('user-select', 'none')
                  .on('selectstart', false);
+	$('#controls').attr('unselectable', 'on')
+                 .css('user-select', 'none')
+                 .on('selectstart', false);
                  
 	$( window ).resize(function() {
 		if (inGame) {
