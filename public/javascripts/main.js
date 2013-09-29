@@ -74,16 +74,12 @@
 
 
 
-
+var backgroundPattern;
 function drawBackground(context, canvas)
 {
-	context.beginPath();
-    context.rect(0,0,canvas.width, canvas.height);
-    context.fillStyle = 'lightblue';
-    context.fill();
-    context.lineWidth = 1;
-    context.strokeStyle = 'black';
-    context.stroke();		
+	context.rect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = backgroundPattern;
+    context.fill();	
 }
 
 function Cloud(size) {
@@ -155,6 +151,8 @@ function particles() {
 }
 function init() {
     particles();
+    backgroundPattern = context.createPattern(resources.get("/images/mainbg.png"), 'repeat');
+
     console.log("start");
 
 
