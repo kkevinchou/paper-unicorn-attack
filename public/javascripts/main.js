@@ -147,6 +147,11 @@ function createEmitterForBlackSmoke() {
     renderer.start();
     return [proton, emitter];
 }
+
+var cloudImagePrefix = "/images/cloud";
+var cloudImageOverlap = 60;
+
+var gameState = 1; // 1 means the game is going on
 function init() {
    // particles();
 
@@ -161,7 +166,25 @@ function init() {
 
 
     setBoardSocketCallback(function (data) {
+        if (gameState == 0) return;
+        
+        if (data.game.ended) {
+            gameState = 0; // 0 means game is over so don't redraw
+
+            if (data.game.winner) {
+                // planes won
+                context.drawImage(resources.get('/images/victory_planes.png'), 0, 0, 1000, 1400);
+            } else {
+                // dragon won
+                context.drawImage(resources.get('/images/victory_dragon.png'), 0, 0, 1000, 1400);
+
+            }
+
+            return;
+        }
+
         drawBackground(context, canvas);
+
 
         /// particle stuff
 
@@ -170,13 +193,15 @@ function init() {
        // p.update();
        // context.restore();
 
+
         ///
         var objects = data.game.objects;
         var cloudObjects = [];
         for (var i = 0; i < objects.length; i++) {
             var object = objects[i];
+            var type = object.type;
 
-            (type == 4) {
+            if (type == 4) {
                 // cloud
                 cloudObjects.push(object);
                 continue;
@@ -184,7 +209,6 @@ function init() {
 
             context.save();
             
-            var type = object.type;
             var x = object.x;
             var y = object.y;
             var adjustedHeadingInDegrees = ((object.heading - 90) + 360) %360;
@@ -210,10 +234,6 @@ function init() {
             context.rotate(adjustedHeadingInDegrees*Math.PI/180);
             context.translate(-x,-y);            
 
-            if (type == 1) {
-                console.log(adjustedHeadingInDegrees);
-
-            }
 
             if (type == 0) {
                 // cargo
@@ -254,16 +274,31 @@ function init() {
         //context.strokeRect(airplane.x,airplane.y,50,50);
 
 
-        // clouds
-     /*   for (var i = 0; i < clouds.length; i++) {
-            var cloud = clouds[i];
-            cloud.x -= 1;
+        // draw clouds
+        //console.log(cloudObjects.length);
+        for (var i = 0; i < cloudObjects.length; i++) {
+            var cloud = cloudObjects[i];
+          //  console.log(i + " " +cloud);
+            var size = cloud.cloudSize;
+            var pattern = cloud.cloudPattern;
+
+            var cloudHeight = cloud.height;
+            var cloudSectionWidth = (cloud.width + cloudImageOverlap*(size-1))/size;
+            var cloudStartX = cloud.x - cloud.width/2.0;
+            var cloudXIncrement = cloudSectionWidth - cloudImageOverlap;
+
+            for (var s = 0; s < size; s++) {
+                var cloudImage = cloudImagePrefix + (pattern[s] + 1) + ".png";
+                context.drawImage(resources.get("/images/cloud.png"), cloud.x + s*cloudXIncrement, cloud.y - cloudHeight/2.0, cloudSectionWidth, cloudHeight);
+            }
         };
 
-            for (var i = 0; i < clouds.length; i++) {
-            var cloud = clouds[i];
-            cloud.draw(context);
-        };*/
+        var newEvents = data.events;
+        for (var i = 0; i < newEvents.length; i++) {
+            var newEvent = newEvents[i];
+
+        }
+
 
    
     });
@@ -295,7 +330,9 @@ $(document).ready(function(){
             '/images/particle1.png',
             '/images/cloud1.png',
             '/images/cloud2.png',
-            '/images/cloud3.png'
+            '/images/cloud3.png',
+            '/images/victory_dragon.png',
+            '/images/victory_planes.png'
 		]);
 
 
