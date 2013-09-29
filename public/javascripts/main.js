@@ -125,13 +125,12 @@ function createEmitterForTrailingSmoke() {
     emitter.rate = new Proton.Rate(Proton.getSpan(0,1), 0.05);
     //add Initialize
    // emitter.addInitialize(new Proton.Radius(0.1, 0.2));
-    emitter.addInitialize(new Proton.Life(1.5,2));
-    emitter.addInitialize(new Proton.Velocity(1, Proton.getSpan(125, 135), 'polar'));
+    emitter.addInitialize(new Proton.Life(1, 1.5));
+    emitter.addInitialize(new Proton.Velocity(1, Proton.getSpan(260, 280), 'polar'));
     //add Behaviour
 
     emitter.addInitialize(new Proton.ImageTarget(resources.get('/images/particle2.png')));
      //emitter.addBehaviour(new Proton.Color('ff0000', 'random'));
-    emitter.addBehaviour(new Proton.Alpha(0.9, 0));
     //set emitter position
     emitter.p.x = canvas.width / 2;
     emitter.p.y = canvas.height / 2;
@@ -156,12 +155,15 @@ function createRainbowEmitter() {
     //add Initialize
    // emitter.addInitialize(new Proton.Radius(0.1, 0.2));
     emitter.addInitialize(new Proton.Life(1.5,2));
-    emitter.addInitialize(new Proton.Velocity(1, Proton.getSpan(125, 135), 'polar'));
+    emitter.addInitialize(new Proton.Velocity(1, Proton.getSpan(250, 290), 'polar'));
     //add Behaviour
 
     emitter.addInitialize(new Proton.ImageTarget(resources.get('/images/Particle-03.png')));
      //emitter.addBehaviour(new Proton.Color('ff0000', 'random'));
     emitter.addBehaviour(new Proton.Alpha(0.9, 0));
+    emitter.addBehaviour(new Proton.RandomDrift(5, 0, .15));
+              //  emitter.addBehaviour(new Proton.Rotate(new Proton.Span(0, 10), new Proton.Span([-10, -5, 5, 15, 10]), 'add'));
+
     //set emitter position
     emitter.p.x = canvas.width / 2;
     emitter.p.y = canvas.height / 2;
@@ -245,7 +247,7 @@ function resetGame() {
     existingParticleEmitters = {};
 }
 
-function drawParticlesForPlane(id, angle, x, y) {
+function drawParticlesForPlane(id, angle, x, y, dashing) {
     var particleData = [];
     if (id in existingParticleEmitters) {
         particleData = existingParticleEmitters[id];
@@ -259,6 +261,31 @@ function drawParticlesForPlane(id, angle, x, y) {
     emitter.p.x = x;
     emitter.p.y = y;
     emitter.rotation = angle;
+
+    emitter.removeAllBehaviours();
+
+    if (dashing) {
+        // more particles
+            emitter.rate = new Proton.Rate(Proton.getSpan(0,3), 0.01);
+            emitter.addBehaviour(new Proton.Alpha(1, 0));
+            emitter.addBehaviour(new Proton.Color('ff0000', 'random'));
+
+
+    } else {
+        // less particles
+        emitter.rate = new Proton.Rate(Proton.getSpan(0,1), 0.01);
+
+       emitter.addBehaviour(new Proton.Alpha(0.2, 0));
+                   //emitter.addBehaviour(new Proton.Color('ff0000', 'random'));
+
+        //    emitter.addBehaviour(new Proton.Color('ff0000', 'random'));
+
+
+     //emitter.addBehaviour(new Proton.Color('ffffff', 'set'));
+
+
+    }
+    emitter.emit();
     proton.update();
 }
 
@@ -293,7 +320,14 @@ function init() {
 
 
    setBoardDisconnectCallback(function (data) {
-        resetGame();
+        // alert('disconnect');
+        if (gameState == 0) {
+            gameState = 2;
+            resetGame();
+            drawBackground(context, canvas);
+            alert("The server is disconnected.");
+
+        }
    });
 
     setBoardSocketCallback(function (data) {
@@ -346,29 +380,61 @@ function init() {
                 continue;
             }
 
-            context.save();
-            
             var x = object.x;
             var y = object.y;
             var adjustedHeadingInDegrees = ((object.heading - 90) + 360) %360;
-
-
-            context.translate(x,y);            
-
+            var shouldFlip = false;
+            var particleDegrees = 360 -  adjustedHeadingInDegrees;
             // if degree change is between 90 and 270, we need to flip the image
             if (adjustedHeadingInDegrees > 90 && adjustedHeadingInDegrees < 270) {
-                context.scale(-1, 1);
+                shouldFlip = true;
                 adjustedHeadingInDegrees = 520 - adjustedHeadingInDegrees;
                 adjustedHeadingInDegrees %= 360;
             }
 
             // so now adjustedHeadingInDegrees is either 0 to 90 or 270 to 360
+            // 0 to 90 case (if flip then 180 to 90)
             if (adjustedHeadingInDegrees > 50 && adjustedHeadingInDegrees < 180) {
                 adjustedHeadingInDegrees = 50;
+
+                if (shouldFlip) {
+                    particleDegrees = 360 - 130;
+                } else {
+                    particleDegrees = 360 - 50;
+                }
+
             } 
 
+            // 270 to 360 case (if flip then 270 to 180)
             if (adjustedHeadingInDegrees > 180 && adjustedHeadingInDegrees < 310) {
                 adjustedHeadingInDegrees = 310;
+
+                if (shouldFlip) {
+                    particleDegrees = 360 - 240;
+                } else {
+                    particleDegrees = 360 - 310;
+                }
+            }
+
+            // draw particles
+            if (type == 0) {
+                drawParticlesForCargo(object.id, particleDegrees, x - 65, y + 15);
+
+            } else if (type == 1) {
+
+                drawParticlesForPlane(object.id, particleDegrees, x, y, object.dashing) ;
+
+            }
+
+
+
+            // draw objects
+            context.save();
+        
+            context.translate(x,y);            
+
+            if (shouldFlip) {
+                context.scale(-1, 1);
             }
             context.rotate(adjustedHeadingInDegrees*Math.PI/180);
             context.translate(-x,-y);            
@@ -378,14 +444,12 @@ function init() {
                 // cargo
 
                 context.drawImage(resources.get("/images/cargo.png"), x-100, y-100, 200, 200);
-                drawParticlesForCargo(object.id, 217, x - 65, y + 15);
 
             } else if (type == 1) {
                 // plane
 
-                if (object.dashing) {
-                    drawParticlesForPlane(object.id, 217, x, y) ;
-                }
+                //if (object.dashing) {
+                //}
                 context.drawImage(resources.get("/images/plane1.png"), x-50, y-50, 100, 100);
 
             } else if (type == 2) {
