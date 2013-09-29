@@ -309,6 +309,7 @@ function drawParticlesForCargo(id, angle, x, y) {
 
 var numDragonColors = 9;
 var numPlaneColors = 11;
+var existingEvents = [];
 function init() {
    // particles();
 
@@ -561,6 +562,11 @@ function init() {
                 filename = newEvent.extra.filename;
                 var sound = new Audio("sounds/" + filename);
                 sound.play();
+            } else if (newEvent.type == "slash") {
+                var x = newEvent.x;
+                var y = newEvent.y;
+
+                context.drawImage(resources.get("/images/slash.png"), x, y, 63, 58);
             }
         }
 
@@ -689,7 +695,8 @@ $(document).ready(function(){
             '/images/victory_dragon_wing_down.png',
             '/images/Meter-Life.png',
             '/images/Meter-Death.png',
-            '/images/homeLogo.png'
+            '/images/homeLogo.png',
+            '/images/slash.png'
 
 		]);
 
