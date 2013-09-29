@@ -152,37 +152,50 @@ function createEmitterForBlackSmoke() {
 
 var gameState = 0; // if game is one, end screen is being displayed
 var victoryDragonFlap = false;
+var wingDelay = 0;
 function animateVictoryDragon() {
     drawBackground(context, canvas);
 
     if (victoryDragonFlap) {
-        context.drawImage(resources.get('/images/victory_dragon.png'), 0, 0, 1000, 1400);
+        context.drawImage(resources.get('/images/victory_dragon.png'), 0, victoryY, 1000, 1103);
 
     } else {
-        context.drawImage(resources.get('/images/victory_dragon_wing_down.png'), 0, 0, 1000, 1400);
+        context.drawImage(resources.get('/images/victory_dragon_wing_down.png'), 0, victoryY, 1000, 1103);
 
     }
-    victoryDragonFlap = !victoryDragonFlap;
+    wingDelay ++;
 
-    if (gameState == 1) {
-        requestAnimFrame(animateVictoryDragon);
+    if (wingDelay > 15) {
+        wingDelay = 0;
+            victoryDragonFlap = !victoryDragonFlap;
 
+    }
+
+    if (victoryY > 600 - 1103){
+        victoryY -= 5;
+
+        if (gameState == 1) {
+            requestAnimFrame(animateVictoryDragon);
+
+        }
     }
 
 }
 
-var victoryPlanesY = 0;
+var victoryY = 0;
 function animateVictoryPlanes() {
     drawBackground(context, canvas);
-    context.drawImage(resources.get('/images/victory_planes.png'), 0, victoryPlanesY, 1000, 1400);
-    if (victoryPlanesY < 0){
-        victoryPlanesY += 5;
+    context.drawImage(resources.get('/images/victory_planes.png'), 0, victoryY, 1000, 1400);
+    if (victoryY < 0){
+        victoryY += 5;
+
+        if (gameState == 1) {
+            requestAnimFrame(animateVictoryPlanes);
+        }
 
     }
 
-    if (gameState == 1) {
-        requestAnimFrame(animateVictoryPlanes);
-    }
+
 }
 
 var cloudImagePrefix = "/images/cloud";
@@ -207,11 +220,13 @@ function init() {
             if (gameState == 0) {
                 if (data.game.winner) {
                     // planes won
-                    victoryPlanesY = -1400;
+                    victoryY = -1400;
                     requestAnimFrame(animateVictoryPlanes);
 
                 } else {
                     // dragon won
+                    victoryY = 600;
+
                      requestAnimFrame(animateVictoryDragon);
 
                 }
@@ -302,11 +317,11 @@ function init() {
 
             }
             
+            context.restore();
+
             if (object.name) {
                 context.strokeText(object.name, x, y);
             }
-
-            context.restore();
         };
 
         //var airplane = data.players[0];
@@ -325,11 +340,27 @@ function init() {
             var cloudSectionWidth = (cloud.width + cloudImageOverlap*(size-1))/size;
             var cloudStartX = cloud.x - cloud.width/2.0;
             var cloudXIncrement = cloudSectionWidth - cloudImageOverlap;
-            console.log(cloudSectionWidth);
+           // console.log(cloudSectionWidth);
             for (var s = 0; s < size; s++) {
-                var cloudImage = cloudImagePrefix + (pattern[s] + 1) + ".png";
+                var p = pattern[s];
+                var x =  cloud.x + s*cloudXIncrement;
+                var y = cloud.y - cloudHeight/2.0;
+                var cloudImage = cloudImagePrefix + (p + 1) + ".png";
+                if (p > 0) {
+                    context.save();
+                    context.translate(x,y);
+                    context.scale(-1, 1);
 
-                context.drawImage(resources.get("/images/cloud.png"), cloud.x + s*cloudXIncrement, cloud.y - cloudHeight/2.0, cloudSectionWidth, cloudHeight);
+                    context.rotate((p*20)*Math.PI/180);
+                    context.translate(-x, -y);
+
+                    context.drawImage(resources.get("/images/cloud.png"), x,y, cloudSectionWidth, cloudHeight);
+                    context.restore();
+                } else {
+                    context.drawImage(resources.get("/images/cloud.png"), x,y, cloudSectionWidth, cloudHeight);
+
+                }
+
             }
         };
 
