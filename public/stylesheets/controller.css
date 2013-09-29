@@ -16,6 +16,11 @@ a {
     margin-right: auto
 }
 
+img.logo {
+	width: 100px;
+	height: 100px;
+}
+
 #startPage {
 	position: absolute;
 	top:0;
@@ -28,6 +33,10 @@ a {
 #name {
 	font-size: 18px;
 	padding: 5px;
+}
+
+#header {
+	vertical-align:middle;
 }
 
 #join, #join:active {

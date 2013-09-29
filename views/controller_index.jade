@@ -7,14 +7,16 @@ html
 		link(rel='stylesheet', href='/stylesheets/controller.css')
 	body
 		div#startPage
-			img.center(src='/images/logo.png')
-			h1.center PLANES and DRAGONS
+			div#header.center
+				table(style='margin:auto')
+					tr
+						td
+							img.logo(src='/images/logo.png')
+						td
+							span PLANES and DRAGONS
 			br
 			form
 				input#name.center(type='text')
-				br
-				p#status.center Status: Offline
-				br
 				div.center
 					input#join.center(type='submit', onclick="return false;") Join
 			br
