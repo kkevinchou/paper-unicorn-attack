@@ -307,7 +307,7 @@ function drawParticlesForCargo(id, angle, x, y) {
 }
 
 
-var numDragonColors = 6;
+var numDragonColors = 9;
 var numPlaneColors = 11;
 function init() {
    // particles();
@@ -660,6 +660,24 @@ $(document).ready(function(){
             '/images/dragon6-breathe.png',
             '/images/dragon6-injured-down.png',
             '/images/dragon6-injured-breathe.png',
+            '/images/dragon7.png',
+            '/images/dragon7-injured.png',
+            '/images/dragon7-down.png',
+            '/images/dragon7-breathe.png',
+            '/images/dragon7-injured-down.png',
+            '/images/dragon7-injured-breathe.png',
+            '/images/dragon8.png',
+            '/images/dragon8-injured.png',
+            '/images/dragon8-down.png',
+            '/images/dragon8-breathe.png',
+            '/images/dragon8-injured-down.png',
+            '/images/dragon8-injured-breathe.png',
+            '/images/dragon9.png',
+            '/images/dragon9-injured.png',
+            '/images/dragon9-down.png',
+            '/images/dragon9-breathe.png',
+            '/images/dragon9-injured-down.png',
+            '/images/dragon9-injured-breathe.png',
             '/images/particle1.png',
             '/images/particle2.png',
             '/images/Particle-03.png',
