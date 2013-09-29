@@ -62,5 +62,5 @@ EventTypes:
 	"dragonDie" - dying dragon
 	"fireballDie" - dying fireball
 	"dragonInjured" - dragon injured by papercut
-	
+	"fighterInjured" - fighter injured by dragon
 	
