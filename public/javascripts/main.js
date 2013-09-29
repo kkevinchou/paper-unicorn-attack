@@ -135,8 +135,8 @@ function particles() {
     emitter.addInitialize(new Proton.Velocity(1, Proton.getSpan(125, 135), 'polar'));
     //add Behaviour
 
-    emitter.addInitialize(new Proton.ImageTarget(resources.get('/images/fireball.png')));
-    //emitter.addBehaviour(new Proton.Color('ff0000', 'random'));
+    //emitter.addInitialize(new Proton.ImageTarget(resources.get('/images/fireball.png')));
+    emitter.addBehaviour(new Proton.Color('ff0000', 'random'));
     emitter.addBehaviour(new Proton.Alpha(0.9, 0));
     //set emitter position
     emitter.p.x = canvas.width / 2;
@@ -178,24 +178,34 @@ function init() {
             var type = object.type;
             var x = object.x;
             var y = object.y;
+            var adjustedHeadingInDegrees = ((object.heading - 90) + 360) %360;
 
-            console.log (x + " " + y);
+
+            //console.log (x + " " + y);
+            context.translate(x,y);            
+            context.rotate(adjustedHeadingInDegrees*Math.PI/180);
+            context.translate(-x,-y);            
+
+            if (type == 1) {
+                            console.log(adjustedHeadingInDegrees);
+
+            }
 
             if (type == 0) {
                 // cargo
                 context.lineWidth = 10;
-                context.strokeRect(x, y, 50, 50);
+                context.strokeRect(x-25, y-25, 50, 50);
             } else if (type == 1) {
                 // plane
-                context.drawImage(resources.get("/images/plane1.png"), x, y, 100, 100);
+                context.drawImage(resources.get("/images/plane1.png"), x-50, y-50, 100, 100);
 
             } else if (type == 2) {
                 // dragon
                 context.strokeStyle = '#ff0000';
-                context.strokeRect(x, y, 50, 50);
+                context.strokeRect(x-25, y-25, 50, 50);
             } else if (type == 3) {
                 // fireball
-                context.drawImage(resources.get("/images/fireball.png"), x, y, 50, 50);
+                context.drawImage(resources.get("/images/fireball.png"), x-25, y-25, 50, 50);
 
             } else if (type == 4) {
                 // cloud
@@ -204,7 +214,7 @@ function init() {
             }
             
             if (object.name) {
-                context.strokeText(object.name, x + 5, y + 30);
+                context.strokeText(object.name, x, y);
             }
 
             context.restore();
