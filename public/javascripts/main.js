@@ -178,16 +178,16 @@ function init() {
             var type = object.type;
             var x = object.x;
             var y = object.y;
-            var heading = (((360-object.heading) - 270) + 360) %360;
+            var adjustedHeadingInDegrees = ((object.heading - 90) + 360) %360;
 
 
             //console.log (x + " " + y);
             context.translate(x,y);            
-            context.rotate(-heading*Math.PI/180);
+            context.rotate(-adjustedHeadingInDegrees*Math.PI/180);
             context.translate(-x,-y);            
 
             if (type == 1) {
-                            console.log(heading);
+                            console.log(adjustedHeadingInDegrees);
 
             }
 
