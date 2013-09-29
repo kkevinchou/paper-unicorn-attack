@@ -322,6 +322,7 @@ function init() {
         }
         gameState = 0;
 
+        context.globalAlpha = 1;
         drawBackground(context, canvas);
 
 
@@ -332,11 +333,12 @@ function init() {
        // p.update();
        // context.restore();
 
-
         ///
         var objects = data.game.objects;
         var cloudObjects = [];
         for (var i = 0; i < objects.length; i++) {
+            context.globalAlpha = 1;
+
             var object = objects[i];
             var type = object.type;
 
@@ -373,15 +375,22 @@ function init() {
             context.rotate(adjustedHeadingInDegrees*Math.PI/180);
             context.translate(-x,-y);            
 
-
             if (type == 0) {
                 // cargo
+
+                if (object.injureFrame == 1) {
+                    context.globalAlpha = 0.3;
+                }
 
                 context.drawImage(resources.get("/images/cargo.png"), x-100, y-100, 200, 200);
                 drawParticlesForCargo(object.id, 217, x - 65, y + 15);
 
             } else if (type == 1) {
                 // plane
+
+                if (object.injureFrame == 1) {
+                    context.globalAlpha = 0.3;
+                }
 
                 if (object.dashing) {
                     drawParticlesForPlane(object.id, 217, x, y) ;
@@ -390,7 +399,12 @@ function init() {
 
             } else if (type == 2) {
                 // dragon
-                var img;
+
+                if (object.injureFrame == 1) {
+                    context.globalAlpha = 0.3;
+                }
+
+                var img = null;
                 if (object.frame ==0) {
                     img = resources.get("/images/dragon1.png");
                 } else if (object.frame == 1) {
@@ -485,7 +499,6 @@ function init() {
         for (var i = 0; i < 20; i++) {
             context.drawImage(resources.get("/images/Meter-Death.png"), margin + i * (barWidth + barSpacing), margin, barWidth, barHeight)
         }
-
 
         for (var i = 0; i < cargoHealth; i++) {
             // context.fillRect(margin + i * (barWidth + barSpacing), margin, barWidth, barHeight);
