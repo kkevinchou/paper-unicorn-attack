@@ -17,12 +17,11 @@ var inGame = false;
 var name = null;
 var mouseDown = false;
 var isVert = false;
-var tapInProgress = false;
 function ready () {
 	document.ontouchmove = function(event){
 		event.preventDefault();
 	}
-	document.getElementById('sound').load();
+	//document.getElementById('sound').load();
 
 	$('#knob').on('dragstart', function(event) { event.preventDefault(); });
 	$('#knob').attr('unselectable', 'on')
@@ -58,9 +57,13 @@ function setupSocketIO() {
   	});
   	
   	socket.on('tap', function (data) {
+  		var text = $("#info").html();
+  		$("#info").html(text +"<br> tap result " + data['result']);
     	var result = data['result'];
-    	if (result == 'success') {
-    		tapInProgress = false;
+    	if (result) {
+    		//setTimeout(function() {
+			//	playSound();
+			//}, 1000);
     	}
   	});
 }
@@ -284,13 +287,10 @@ function move(angle, magnitude, delay) {
 }
 
 function tap() {
-	if (!tapInProgress) {
-		setTimeout(function() {
-			playSound();
-			socket.emit("tap", {"name": name});
-		}, 0);
-		tapInProgress = true;
-	}
+	setTimeout(function() {
+		playSound();
+		socket.emit("tap", {"name": name});
+	}, 0);
 }
 
 function calculateMagnitude(startX, startY, destinationX, destinationY) {
@@ -308,7 +308,7 @@ function calculateAngle(startX, startY, destinationX, destinationY) {
 	return angle;
 }
 
-function playSound(url){ 
+function playSound(){ 
 	document.getElementById('sound').play();
 	document.getElementById('sound').currentTime = 0;
 }
