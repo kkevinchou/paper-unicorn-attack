@@ -61,9 +61,9 @@ function setupSocketIO() {
   		$("#info").html(text +"<br> tap result " + data['result']);
     	var result = data['result'];
     	if (result) {
-    		//setTimeout(function() {
-			//	playSound();
-			//}, 1000);
+//     		setTimeout(function() {
+// 				playSound();
+// 			}, 1000);
     	}
   	});
 }
@@ -268,7 +268,7 @@ function padTouchEnd(event) {
 	$("#knob").hide();
 	if (swipeLast) {
 		angle = calculateAngle(swipeStart.x, swipeStart.y, swipeLast.x, swipeLast.y);
-		magnitude = calculateMagnitude(swipeStart.x, swipeStart.y, x, y);
+		magnitude = calculateMagnitude(swipeStart.x, swipeStart.y, swipeLast.x, swipeLast.y);
 		eventType = 'move';
 		socket.emit("move", {"name": name, "angle" :angle, "magnitude": magnitude});
 		for(i = 1; i < 6; i++) {
