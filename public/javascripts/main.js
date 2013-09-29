@@ -126,7 +126,7 @@ function createEmitterForTrailingSmoke() {
     //add Initialize
    // emitter.addInitialize(new Proton.Radius(0.1, 0.2));
     emitter.addInitialize(new Proton.Life(1.5,2));
-    emitter.addInitialize(new Proton.Velocity(1, Proton.getSpan(125, 135), 'polar'));
+    emitter.addInitialize(new Proton.Velocity(1, Proton.getSpan(0, 10), 'polar'));
     //add Behaviour
 
     emitter.addInitialize(new Proton.ImageTarget(resources.get('/images/particle2.png')));
@@ -156,7 +156,7 @@ function createRainbowEmitter() {
     //add Initialize
    // emitter.addInitialize(new Proton.Radius(0.1, 0.2));
     emitter.addInitialize(new Proton.Life(1.5,2));
-    emitter.addInitialize(new Proton.Velocity(1, Proton.getSpan(125, 135), 'polar'));
+    emitter.addInitialize(new Proton.Velocity(1, Proton.getSpan(0, 10), 'polar'));
     //add Behaviour
 
     emitter.addInitialize(new Proton.ImageTarget(resources.get('/images/Particle-03.png')));
@@ -293,7 +293,14 @@ function init() {
 
 
    setBoardDisconnectCallback(function (data) {
-        resetGame();
+        // alert('disconnect');
+        if (gameState == 0) {
+            gameState = 2;
+            resetGame();
+            drawBackground(context, canvas);
+            alert("The server is disconnected.");
+
+        }
    });
 
     setBoardSocketCallback(function (data) {
@@ -378,13 +385,13 @@ function init() {
                 // cargo
 
                 context.drawImage(resources.get("/images/cargo.png"), x-100, y-100, 200, 200);
-                drawParticlesForCargo(object.id, 217, x - 65, y + 15);
+                drawParticlesForCargo(object.id, 90, x - 65, y + 15);
 
             } else if (type == 1) {
                 // plane
 
                 if (object.dashing) {
-                    drawParticlesForPlane(object.id, 217, x, y) ;
+                    drawParticlesForPlane(object.id, 90, x, y) ;
                 }
                 context.drawImage(resources.get("/images/plane1.png"), x-50, y-50, 100, 100);
 
