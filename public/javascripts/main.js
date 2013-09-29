@@ -99,7 +99,7 @@ Cloud.prototype.draw = function(context)
 	for (var i = 0; i < this.size; i++) {
 		var img = resources.get('/images/cloud.png');
 		
-		context.drawImage(img, this.x + i*30, this.y, 50, 50);
+		context.drawImage(img, this.x + i*20, this.y, 50, 50);
 
 
 
