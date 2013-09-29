@@ -233,6 +233,15 @@ var existingParticleEmitters = {};
 
 function resetGame() {
     // clear array
+    for (var id in existingParticleEmitters) {
+        if (Object.prototype.hasOwnProperty.call(existingParticleEmitters, id)) {
+            var particleData = existingParticleEmitters[id];
+            var proton = particleData[0];
+            var emitter = particleData[1];
+            proton.removeEmitter(emitter);
+            proton.destory(); // lol, misspelling in their code
+        }
+    }
     existingParticleEmitters = {};
 }
 
@@ -284,7 +293,7 @@ function init() {
 
 
    setBoardDisconnectCallback(function (data) {
-        // alert('disconnect');
+        resetGame();
    });
 
     setBoardSocketCallback(function (data) {
