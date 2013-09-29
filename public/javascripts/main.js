@@ -181,13 +181,28 @@ function init() {
             var adjustedHeadingInDegrees = ((object.heading - 90) + 360) %360;
 
 
-            //console.log (x + " " + y);
             context.translate(x,y);            
+
+            // if degree change is between 90 and 270, we need to flip the image
+            if (adjustedHeadingInDegrees > 90 && adjustedHeadingInDegrees < 270) {
+                context.scale(-1, 1);
+                adjustedHeadingInDegrees = 520 - adjustedHeadingInDegrees;
+                adjustedHeadingInDegrees %= 360;
+            }
+
+            // so now adjustedHeadingInDegrees is either 0 to 90 or 270 to 360
+            if (adjustedHeadingInDegrees > 50 && adjustedHeadingInDegrees < 180) {
+                adjustedHeadingInDegrees = 50;
+            } 
+
+            if (adjustedHeadingInDegrees > 180 && adjustedHeadingInDegrees < 310) {
+                adjustedHeadingInDegrees = 310;
+            }
             context.rotate(adjustedHeadingInDegrees*Math.PI/180);
             context.translate(-x,-y);            
 
             if (type == 1) {
-                            console.log(adjustedHeadingInDegrees);
+                console.log(adjustedHeadingInDegrees);
 
             }
 
