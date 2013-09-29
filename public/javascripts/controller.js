@@ -12,6 +12,7 @@ function isVertical() {
 
 var swipeStart = null;
 var swipeLast = null;
+var tapLast = null;
 var inGame = false;
 var name = null;
 var mouseDown = false;
@@ -126,51 +127,56 @@ function setupController(data) {
 	showController();
 	$('#handle').text(data['name']);
 	$('#controls').css('background-color', data['color']);
-	$('#controls').bind('touchstart', function (event, data) {
-		$("#info").html("Bomb");
-		tap();
-	});
-	$('#controls').bind('mousedown', function (event, data) {
-		$("#info").html("Bomb");
-		tap();
-	});
-	$('#pad').bind('mousedown', function (event, data) {
-		mouseDown = true;
-		padTouchStart(event);
-		event.stopPropagation();
-	});
-	$('#pad').bind('mousemove', function (event, data) {
-		if(mouseDown) {
+	$('#controls').unbind('touchstart')
+	$('#controls').unbind('mousedown')
+	if ('ontouchstart' in document.documentElement) {
+		$('#controls').bind('touchstart', function (event, data) {
+			event.stopPropagation();
+			tap();
+		});
+		$('#pad').bind('touchstart', function (event, data) {
+			padTouchStart(event);
+		});
+		$('#pad').bind('touchmove', function (event) {
 			padTouchMove(event);
-		}
-		event.stopPropagation();
-	});
-	$('#pad').bind('mouseup', function (event, data) {
-		if (mouseDown) {
+		});
+		$('#pad').bind('touchend', function (event, data) {
 			padTouchEnd(event);
-			mouseDown = false;
-		}
-		event.stopPropagation();
-	});
-	$('#pad').bind('mousecancel', function (event, data) {
-		if (mouseDown) {
+		});
+		$('#pad').bind('touchcancel', function (event, data) {
 			padTouchEnd(event);
-			mouseDown = false;
-		}
-		event.stopPropagation();
-	});
-	$('#pad').bind('touchstart', function (event, data) {
-		padTouchStart(event);
-	});
-	$('#pad').bind('touchmove', function (event) {
-		padTouchMove(event);
-	});
-	$('#pad').bind('touchend', function (event, data) {
-		padTouchEnd(event);
-	});
-	$('#pad').bind('touchcancel', function (event, data) {
-		padTouchEnd(event);
-	});
+		});
+	} else {
+		$('#controls').bind('mousedown', function (event, data) {
+			event.stopPropagation();
+			tap();
+		});
+		$('#pad').bind('mousedown', function (event, data) {
+			mouseDown = true;
+			padTouchStart(event);
+			event.stopPropagation();
+		});
+		$('#pad').bind('mousemove', function (event, data) {
+			if(mouseDown) {
+				padTouchMove(event);
+			}
+			event.stopPropagation();
+		});
+		$('#pad').bind('mouseup', function (event, data) {
+			if (mouseDown) {
+				padTouchEnd(event);
+				mouseDown = false;
+			}
+			event.stopPropagation();
+		});
+		$('#pad').bind('mousecancel', function (event, data) {
+			if (mouseDown) {
+				padTouchEnd(event);
+				mouseDown = false;
+			}
+			event.stopPropagation();
+		});
+	}
 }
 
 function getPointFromEvent(event) {
@@ -287,4 +293,8 @@ function calculateAngle(startX, startY, destinationX, destinationY) {
 		angle += 270;
 	}
 	return angle;
+}
+
+function playSound( url ){   
+  	$("#sound").innerHTML="<embed src='"+url+"' hidden=true autostart=true loop=false>";
 }
