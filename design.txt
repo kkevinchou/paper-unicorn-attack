@@ -57,3 +57,10 @@ Collisions:
 		Cargo: fireball dies, fighter takes dmg
 		Dragon: none
 		Fireball: none
+		
+EventTypes:
+	"dragonDie" - dying dragon
+	"fireballDie" - dying fireball
+	"dragonInjured" - dragon injured by papercut
+	
+	
