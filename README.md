@@ -1,4 +1,4 @@
-paper-unicorn-attack
+SF Indie Game Jam 2013 - paper-unicorn-attack
 ====================
 
 Installing Node.js on Mac:
